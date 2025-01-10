@@ -130,7 +130,7 @@ async function fetchBook() {
 async function addToWishlist() {
   try {
     const response = await fetch(
-        `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmailStorage.value}&isbn=${isbn}`,
+        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmailStorage.value}&isbn=${isbn}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' }

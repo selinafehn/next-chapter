@@ -58,7 +58,7 @@ const onLogin = async () => {
   successMessage.value = "";
   try {
     const response = await fetch(
-        "https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user",
+        "https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -102,7 +102,7 @@ const onLogout = async () => {
   loading.value = true;
   errorMessage.value = "";
   try {
-    const logoutUrl = `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user?token=${userToken.value}`;
+    const logoutUrl = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user?token=${userToken.value}`;
     const response = await fetch(logoutUrl, {
       method: "DELETE",
     });
@@ -125,7 +125,7 @@ const onRegister = async () => {
   error.value = false;
   try {
     const response = await fetch(
-        "https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user/create",
+        "https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/create",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

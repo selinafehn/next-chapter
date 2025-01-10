@@ -61,7 +61,7 @@ export default {
     const fetchBooks = async () => {
       try {
         const response = await fetch(
-            'https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/book/all'
+            'https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all'
         );
         if (!response.ok) {
           throw new Error('API Error');
