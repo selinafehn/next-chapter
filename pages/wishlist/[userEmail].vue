@@ -1,4 +1,4 @@
-<script setup>
+<script setup >
 import { ref, onMounted } from 'vue'
 import Header from '~/components/header.vue'
 import Navbanner from '~/components/navbanner.vue'
@@ -7,7 +7,6 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 import { useStorage } from '@vueuse/core';
 const userEmailStorage = useStorage('auth_email', '');
-
 const userEmail = userEmailStorage.value;
 const list = ref(null)
 const book = ref(null)

@@ -2,12 +2,10 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
-
 const router = useRouter()
 
 // Dialog-States
 const visibleProfile = ref(false)
-const visibleCart = ref(false)
 
 // Logged-in-User
 const userEmail = useStorage('auth_email', '')
@@ -62,7 +60,7 @@ const items = [
     label: 'Warenkorb',
     icon: 'pi pi-shopping-cart',
     command: () => {
-      visibleCart.value = true
+      router.push(`/shoppingcart/${userEmail.value}`)
     }
   }
 ]
@@ -86,16 +84,4 @@ const items = [
     </div>
   </Dialog>
 
-  <!-- Dialog Warenkorb (falls benötigt) -->
-  <Dialog
-      v-model:visible="visibleCart"
-      modal
-      :style="{ width: '50rem' }"
-      :closable="true"
-  >
-    <!-- Inhalt für den Warenkorb -->
-    Warenkorb-Inhalt
-  </Dialog>
-
-  <!-- KEIN Dialog mehr für Wunschliste -->
 </template>
