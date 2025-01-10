@@ -20,7 +20,7 @@ async function fetchList() {
     console.log("Fetch URL:", `...wishlist?userEmail=${userEmail}`)
 
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0wishlist?userEmail=${userEmail}`
+        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlist?userEmail=${userEmail}`
     )
     console.log("Response-Status:", response.status)
 
