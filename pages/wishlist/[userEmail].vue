@@ -1,7 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import DataView from 'primevue/dataview'
-import Button from 'primevue/button'
 import Header from '~/components/header.vue'
 import Navbanner from '~/components/navbanner.vue'
 import { useRoute } from 'vue-router'
@@ -11,125 +9,95 @@ import { useStorage } from '@vueuse/core';
 const userEmailStorage = useStorage('auth_email', '');
 const userEmail = userEmailStorage.value;
 const list = ref(null)
+const book = ref(null)
 
 onMounted(async () => {
   await fetchList()
 })
-async function fetchList() {
-  try {
-    console.log("Fetch URL:", `...wishlist?userEmail=${userEmail}`)
 
-    const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlist?userEmail=${userEmail}`
-    )
-    console.log("Response-Status:", response.status)
+async function fetchList () {
+  try {
+    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlist?userEmail=${userEmail}`)
 
     if (!response.ok) {
       throw new Error('Fehler beim Laden der Wishlist')
     }
 
     const data = await response.json()
-    console.log("Response JSON:", data)
-
+    // data sollte dem JSON entsprechen, das du oben gepostet hast
+    // also in etwa: { books: [...] }
     list.value = data
   } catch (error) {
     console.error('Fehler:', error)
-    list.value = null
+    list.value = { books: [] } // Leeres Array, damit v-if/v-for nicht crashen
   }
 }
 
-// Beispiele für Klick-Handler
-function editBook(book) {
-  console.log("Buch bearbeiten:", book)
+async function fetchBookByIsbn() {
+  try {
+    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book?isbn=${isbn}`)
+    if (!response.ok) {
+      throw new Error('Fehler beim Laden des Buches')
+    }
+    const data = await response.json()
+    book.value = data
+  } catch (error) {
+    console.error('Fehler:', error)
+    book.value = null
+  }
 }
 
-function addToCart(book) {
-  console.log("Buch in den Warenkorb:", book)
-}
-
-function removeBook(book) {
-  console.log("Buch löschen:", book)
-}
-
-console.log("userEmail aus Route:", userEmail)
 </script>
 
 <template>
   <Header />
   <Navbanner />
 
-  <div class="max-w-5xl mx-auto p-4">
-    <h1 class="text-2xl font-semibold mb-2">Meine Wishlist</h1>
+  <div class="container mx-auto p-4">
+    <!-- Header -->
+    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist deine Wishlist {{userEmail}}</h1>
 
-    <!-- 1) Debug-Ausgabe, damit du siehst, ob list überhaupt gefüllt ist -->
-    <pre>{{ list }}</pre>
-
-    <!-- 2) DataView nur anzeigen, wenn list.books existiert und nicht leer ist -->
-    <DataView
-        v-if="list && list.books && list.books.length"
-        :value="list.books"
-        layout="grid"
-        rows="9"
-        :paginator="false"
-        class="wishlist-dataview"
-    >
-      <!-- Custom Template für Grid-Darstellung -->
-      <template #grid="slotProps">
-        <div
-            class="border border-gray-200 rounded p-4 flex flex-col items-center text-center gap-2"
-        >
-          <!-- Buch-Cover -->
-          <img
-              :src="slotProps.data.imageUrl"
-              alt="Buch-Cover"
-              class="w-24 h-36 object-cover"
-          />
-
-          <!-- Buch-Titel / Autor / Preis -->
-          <h3 class="font-semibold text-lg">{{ slotProps.data.title }}</h3>
-          <p class="text-sm text-gray-700">
-            {{ slotProps.data.author }}
-          </p>
-          <p class="font-bold">
-            {{ slotProps.data.price }} €
-          </p>
-
-          <!-- Beispiel-Button -->
-          <Button
-              class="px-3 py-1 mt-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-          >
-            Vorbestellen
-          </Button>
-
-          <!-- Beispielaktionen (Bearbeiten, Warenkorb, Löschen) -->
-          <div class="flex gap-3 mt-2">
-            <Button
-                title="Bearbeiten"
-                class="text-gray-600 hover:text-blue-500"
-                @click="() => editBook(slotProps.data)"
-            >
-              <i class="pi pi-pencil"></i>
-            </Button>
-            <Button
-                title="In den Warenkorb"
-                class="text-gray-600 hover:text-green-500"
-                @click="() => addToCart(slotProps.data)"
-            >
-              <i class="pi pi-shopping-cart"></i>
-            </Button>
-            <Button
-                title="Löschen"
-                class="text-gray-600 hover:text-red-500"
-                @click="() => removeBook(slotProps.data)"
-            >
-              <i class="pi pi-trash"></i>
-            </Button>
-          </div>
+    <!-- Wenn list.books existiert und nicht leer ist -->
+    <div v-if="list?.books && list.books.length > 0" class="space-y-4">
+      <!-- Iteriere über alle Bücher in der Wishlist -->
+      <div
+          v-for="book in list.books"
+          :key="book.isbn"
+          class="flex items-center bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
+      >
+        <!-- Bild des Buches -->
+        <img
+            :src="book.imageUrlL || book.imageUrlM || book.imageUrl"
+            :alt="`Cover von ${book.title}`"
+            class="w-32 h-48 object-cover rounded-md mr-4"
+        />
+        <!-- Informationen zum Buch -->
+        <div class="flex-1">
+          <h2 class="text-lg font-semibold">{{ book.title }}</h2>
+          <p class="text-gray-700"><span class="font-medium">Autor:</span> {{ book.author }}</p>
+          <p class="text-gray-700"><span class="font-medium">Genre:</span> {{ book.genre }}</p>
+          <p class="text-gray-700 font-bold"><span class="font-bold">Preis:</span> {{ book.price }} €</p>
         </div>
-      </template>
-    </DataView>
+        <!-- Einkaufswagen-Symbol -->
+        <Button
+            @click="addToCart(book.isbn)"
+            class="text-gray-600 hover:text-gray-800 ml-4"
+        >
+          In den Warenkorb
+        </Button>
+        <Button
+            @click="deleteList(book.isbn)"
+            class="text-gray-600 hover:text-gray-800 ml-4"
+        >
+          Löschen
+        </Button>
+      </div>
+    </div>
 
-    <!-- Fallback, wenn keine Bücher vorhanden -->
-    <p v-else class="mt-4">Keine Bücher in der Wishlist gefunden.</p>
+    <!-- Wenn das books-Array leer ist oder gar nichts da ist -->
+    <div v-else class="text-center text-gray-500">
+      <p>Keine Bücher in der Wishlist vorhanden.</p>
+    </div>
   </div>
+
 </template>
