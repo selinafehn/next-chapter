@@ -85,7 +85,7 @@ async function deleteOneBookFromCart(isbn) {
       <div
           v-for="book in cart.books"
           :key="book.isbn"
-          class="flex items-center bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
+          class="flex items-center bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 dark:bg-gray-500"
       >
         <!-- Bild des Buches -->
         <img

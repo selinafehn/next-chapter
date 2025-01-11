@@ -87,7 +87,7 @@ async function fetchBookByIsbn() {
       <div
           v-for="book in list.books"
           :key="book.isbn"
-          class="flex items-center bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
+          class="flex items-center bg-white dark:bg-gray-500 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
       >
         <!-- Bild des Buches -->
         <img

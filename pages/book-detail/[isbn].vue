@@ -3,8 +3,8 @@
   <navbanner />
   <pre>{{ list }}</pre>
   <!-- Hauptcontainer -->
-  <div class="max-w-4xl mx-auto my-8 p-4 ">
-    <div v-if="book" class="flex flex-col md:flex-row gap-6">
+  <div class="max-w-4xl mx-auto my-8 p-4  ">
+    <div v-if="book" class="flex flex-col md:flex-row gap-6 ">
 
       <!-- Cover-Bild -->
       <div class="flex-shrink-0">
@@ -17,7 +17,7 @@
         <!-- Platzhalter-Bild, falls Cover nicht vorhanden -->
         <div
             v-else
-            class="w-60 h-80 bg-gray-200 flex items-center justify-center rounded"
+            class="w-60 h-80 bg-gray-200  flex items-center justify-center rounded"
         >
           <span class="text-gray-600  dark:text-gray-100">Kein Cover</span>
         </div>
@@ -67,6 +67,7 @@
             </p>
             <Toast />
             <Button class="dark:text-gray-100" @click="addToWishlist">Zur Wishlist hinzufügen</Button>
+            <p></p>
             <Button class="dark:text-gray-100" @click="addToCart">Zum Warenkorb hinzufügen</Button>
 
           </div>
