@@ -30,21 +30,10 @@
         <p class="text-sm text-gray-500 ">
           Herausgeber: {{ book.publisher }}
         </p>
-
         <!-- Preis -->
         <div class="mt-2 text-lg font-bold text-gray-800 ">
           {{ book.price }} €
         </div>
-
-        <!-- Button -->
-        <Button
-            class="mt-4 px-4 py-2 bg-blue-600 text-white
-                 rounded-md hover:bg-blue-700 w-full
-                 disabled:opacity-50 disabled:cursor-not-allowed"
-            :disabled="book.quantity === 0"
-        >
-          {{ book.quantity > 0 ? 'In den Warenkorb' : 'Nicht verfügbar' }}
-        </Button>
       </div>
     </div>
   </div>

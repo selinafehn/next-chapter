@@ -67,6 +67,7 @@
             </p>
             <Toast />
             <Button class="dark:text-gray-100" @click="addToWishlist">Zur Wishlist hinzufügen</Button>
+            <Button class="dark:text-gray-100" @click="addToCart">Zum Warenkorb hinzufügen</Button>
 
           </div>
         </div>
@@ -150,6 +151,35 @@ async function addToWishlist() {
     severity: 'success',
     summary: 'Erfolg',
     detail: 'Das Buch wurde deiner Wunschliste hinzugefügt!',
+    life: 3000 // 3 Sekunden sichtbar
+  });
+}
+
+
+async function addToCart() {
+  try {
+    const response = await fetch(
+        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}&quantity=1`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        }
+    )
+
+    if (!response.ok) {
+      throw new Error('Fehler beim Hinzufügen zur Wishlist')
+    }
+
+    // Falls du irgendeine Rückgabe verarbeiten willst:
+    const data = await response.json()
+    console.log('Wishlist-Response:', data)
+  } catch (error) {
+    console.error('Fehler:', error)
+  }
+  toast.add({
+    severity: 'success',
+    summary: 'Erfolg',
+    detail: 'Das Buch wurde deinem Warenkorb hinzugefügt!',
     life: 3000 // 3 Sekunden sichtbar
   });
 }

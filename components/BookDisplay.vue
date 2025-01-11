@@ -1,10 +1,30 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+const books = ref([]);
+
+const fetchBooks = async () => {
+  let data = null;
+  try {
+    const response = await fetch('https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all');
+    if (!response.ok) throw new Error('API Fehler');
+    data = await response.json();
+    books.value = data.books || [];
+  } catch (error) {
+  }
+};
+
+onMounted(async () => {
+  await fetchBooks();
+});
+
+</script>
+
 <template>
   <div class="p-6 bg-gray-50  dark:bg-black min-h-screen">
     <Carousel
         :value="books"
         :numVisible="4"
         :numScroll="4"
-        :responsiveOptions="responsiveOptions"
         class="text-gray-900 dark:text-gray-100 p-5 pb-4"
     >
       <!-- Slot für einzelne Buchkarte im Karussell -->
@@ -41,69 +61,9 @@
           <div class="text-lg font-semibold text-gray-800 dark:text-gray-100 text-center mt-2">
             {{ slotProps.data.price }} €
           </div>
-
-          <!-- Warenkorb-Button -->
-          <Button class="mt-4 px-4 py-2 mt-auto bg-gray-600 text-white rounded-md hover:bg-gray-600" :disabled="slotProps.data.quantity === 0">
-            {{ slotProps.data.quantity > 0 ? 'In den Warenkorb' : 'Nicht verfügbar' }}
-          </Button>
         </div>
       </template>
     </Carousel>
   </div>
 </template>
-
-<script>
-import { ref, onMounted } from 'vue';
-
-export default {
-  name: 'BookDisplay',
-  setup() {
-    const books = ref([]);
-
-    const fetchBooks = async () => {
-      try {
-        const response = await fetch(
-            'https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all'
-        );
-        if (!response.ok) {
-          throw new Error('API Error');
-        }
-        const data = await response.json();
-        books.value = data.books;
-      } catch (error) {
-        console.error('Fehler beim Laden der Bücher:', error);
-        books.value = []; // Leere Liste bei Fehler
-      }
-    };
-
-    const responsiveOptions = ref([
-      {
-        breakpoint: '1400px',
-        numVisible: 4,
-        numScroll: 1
-      },
-      {
-        breakpoint: '1199px',
-        numVisible: 3,
-        numScroll: 1
-      },
-      {
-        breakpoint: '767px',
-        numVisible: 2,
-        numScroll: 1
-      },
-      {
-        breakpoint: '575px',
-        numVisible: 1,
-        numScroll: 1
-      }
-    ]);
-
-    onMounted(fetchBooks);
-
-    return { books, responsiveOptions };
-  }
-};
-</script>
-
 
