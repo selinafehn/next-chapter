@@ -1,14 +1,14 @@
 <script setup lang="ts">
-/*
-  Dein Login-Component mit @vueuse/core
-  Damit der Token im LocalStorage persistiert,
-  sodass man nach dem Schließen des Fensters eingeloggt bleibt.
-*/
 import { ref, reactive, computed } from "vue";
 import { useStorage } from "@vueuse/core"; // <--- NEU
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Password from "primevue/password";
+import Toast from "primevue/toast";
+import { useToast } from 'primevue/usetoast';
+
+// Für Meldungen
+const toast = useToast();
 
 // Zustand für Umschaltung (Login/Registrierung)
 const showLogin = ref(true);
@@ -19,7 +19,6 @@ const password = ref("");
 const loading = ref(false);
 const errorMessage = ref("");
 const successMessage = ref("");
-
 
 const userEmailStorage = useStorage('auth_email', '');
 const userNameStorage = useStorage('auth_username', '');
@@ -51,6 +50,7 @@ const toggleForm = () => {
 const isLoggedIn = computed(() => !!userToken.value);
 
 
+
 // Login-Logik
 const onLogin = async () => {
   loading.value = true;
@@ -79,20 +79,26 @@ const onLogin = async () => {
       userNameStorage.value = email.value;       // Oder E-Mail als Fallback
     }
     userEmailStorage.value = email.value;         // <-- E-Mail speichern
-    // Falls der Server den Username liefert, übernehmen wir ihn
-    if (data.username) {
-      formData.username = data.username;
-    } else {
-      // Oder als Fallback die E-Mail eintragen
-      formData.username = email.value;
-    }
 
     userToken.value = data.token     // token speichern
     userEmailStorage.value = email.value  // E-Mail speichern
 
     successMessage.value = "Login erfolgreich!";
+    toast.add({
+      severity: 'success',
+      summary: 'Erfolg',
+      detail: 'Login erfolgreich!',
+      life: 3000
+    });
+
   } catch (err: any) {
     errorMessage.value = err.message || "Ein unerwarteter Fehler ist aufgetreten.";
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: 'Ein unerwarteter Fehler beim Login ist aufgetreten. Prüfe deine Email-Adresse und dein Passwort',
+      life: 3000
+    });
   } finally {
     loading.value = false;
   }
@@ -107,12 +113,22 @@ const onLogout = async () => {
       method: "DELETE",
     });
     if (!response.ok) throw new Error("Logout fehlgeschlagen");
-
-    // Nach erfolgreichem Logout den Token lokal löschen
-    userToken.value = "";
+    localStorage.clear();
     formData.username = ""; // optional: weitere Felder leeren
+    toast.add({
+      severity: 'success',
+      summary: 'Erfolg',
+      detail: 'Erfolreich ausgeloggt!',
+      life: 3000 // 3 Sekunden sichtbar
+    });
   } catch (err: any) {
     errorMessage.value = err.message || "Ein Fehler beim Logout ist aufgetreten.";
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: 'Ein Fehler beim Logout ist aufgetreten!',
+      life: 3000 // 3 Sekunden sichtbar
+    });
   } finally {
     loading.value = false;
   }
@@ -134,16 +150,30 @@ const onRegister = async () => {
     );
     if (!response.ok) throw new Error("Registrierung fehlgeschlagen");
     success.value = true;
+    toast.add({
+      severity: 'success',
+      summary: 'Erfolg',
+      detail: 'Erfolreich registriert!',
+      life: 3000 // 3 Sekunden sichtbar
+    });
   } catch (err: any) {
     error.value = true;
-    errorMessage.value = err.message || "Ein Fehler ist aufgetreten!";
+    errorMessage.value = err.message || "";
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: 'Ein Fehler ist beim registrieren aufgetreten!',
+      life: 3000 // 3 Sekunden sichtbar
+    });
   } finally {
     loading.value = false;
   }
+
 };
 </script>
 
 <template>
+  <Toast />
   <div class="flex flex-col items-center p-4">
     <!-- Falls NICHT eingeloggt: Login und Registrierung -->
     <div v-if="!isLoggedIn">
@@ -183,7 +213,6 @@ const onRegister = async () => {
                   inputClass="w-full py-2 px-3 border border-gray-300 rounded focus:border-gray-700"
               />
             </div>
-
             <!-- Login-Button -->
             <Button
                 label="Anmelden"
@@ -191,10 +220,6 @@ const onRegister = async () => {
                 class="w-full bg-gray-700 hover:bg-gray-800 text-white py-2 rounded"
                 type="submit"
             />
-            <!-- Fehlermeldung -->
-            <p v-if="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</p>
-            <!-- Erfolgsnachricht -->
-            <p v-if="successMessage" class="text-green-500 mt-4">{{ successMessage }}</p>
           </form>
 
           <p class="mt-4">
@@ -212,141 +237,62 @@ const onRegister = async () => {
           <form @submit.prevent="onRegister" class="w-full max-w-md">
             <!-- E-Mail -->
             <div class="mb-3">
-              <label for="email" class="block text-sm font-medium mb-1"
-              >E-Mail *</label
-              >
-              <InputText
-                  id="email"
-                  v-model="formData.email"
-                  placeholder="E-Mail Adresse"
-                  class="w-full"
-              />
+              <label for="email" class="block text-sm font-medium mb-1">E-Mail *</label>
+              <InputText id="email" v-model="formData.email" placeholder="E-Mail Adresse" class="w-full"/>
             </div>
 
             <!-- Benutzername -->
             <div class="mb-3">
-              <label for="username" class="block text-sm font-medium mb-1"
-              >Benutzername *</label
-              >
-              <InputText
-                  id="username"
-                  v-model="formData.username"
-                  placeholder="Benutzername"
-                  class="w-full"
-              />
+              <label for="username" class="block text-sm font-medium mb-1">Benutzername *</label>
+              <InputText id="username" v-model="formData.username" placeholder="Benutzername" class="w-full"/>
             </div>
 
             <!-- Vorname -->
             <div class="mb-3">
-              <label for="firstName" class="block text-sm font-medium mb-1"
-              >Vorname *</label
-              >
-              <InputText
-                  id="firstName"
-                  v-model="formData.firstName"
-                  placeholder="Vorname"
-                  class="w-full"
-              />
+              <label for="firstName" class="block text-sm font-medium mb-1">Vorname *</label>
+              <InputText id="firstName" v-model="formData.firstName" placeholder="Vorname" class="w-full"/>
             </div>
 
             <!-- Nachname -->
             <div class="mb-3">
-              <label for="lastName" class="block text-sm font-medium mb-1"
-              >Nachname *</label
-              >
-              <InputText
-                  id="lastName"
-                  v-model="formData.lastName"
-                  placeholder="Nachname"
-                  class="w-full"
-              />
+              <label for="lastName" class="block text-sm font-medium mb-1">Nachname *</label>
+              <InputText id="lastName" v-model="formData.lastName" placeholder="Nachname" class="w-full"/>
             </div>
 
             <!-- Passwort -->
             <div class="mb-3">
-              <label for="password" class="block text-sm font-medium mb-1"
-              >Passwort *</label
-              >
-              <Password
-                  id="password"
-                  v-model="formData.password"
-                  placeholder="Passwort"
-                  toggleMask
-                  class="w-full"
-              />
+              <label for="password" class="block text-sm font-medium mb-1">Passwort *</label>
+              <Password id="password" v-model="formData.password" placeholder="Passwort" toggleMask class="w-full"/>
             </div>
 
             <!-- Straße -->
             <div class="mb-3">
-              <label for="street" class="block text-sm font-medium mb-1"
-              >Straße *</label
-              >
-              <InputText
-                  id="street"
-                  v-model="formData.street"
-                  placeholder="Straße"
-                  class="w-full"
-              />
+              <label for="street" class="block text-sm font-medium mb-1">Straße *</label>
+              <InputText id="street" v-model="formData.street" placeholder="Straße" class="w-full"/>
             </div>
 
             <!-- Stadt -->
             <div class="mb-3">
-              <label for="city" class="block text-sm font-medium mb-1"
-              >Stadt *</label
-              >
-              <InputText
-                  id="city"
-                  v-model="formData.city"
-                  placeholder="Stadt"
-                  class="w-full"
-              />
+              <label for="city" class="block text-sm font-medium mb-1">Stadt *</label>
+              <InputText id="city" v-model="formData.city" placeholder="Stadt" class="w-full"/>
             </div>
 
             <!-- Postleitzahl -->
             <div class="mb-3">
-              <label for="postalCode" class="block text-sm font-medium mb-1"
-              >Postleitzahl *</label
-              >
-              <InputText
-                  id="postalCode"
-                  v-model="formData.postalCode"
-                  placeholder="Postleitzahl"
-                  class="w-full"
-              />
+              <label for="postalCode" class="block text-sm font-medium mb-1">Postleitzahl *</label>
+              <InputText id="postalCode" v-model="formData.postalCode" placeholder="Postleitzahl" class="w-full"/>
             </div>
 
             <!-- Land -->
             <div class="mb-3">
-              <label for="country" class="block text-sm font-medium mb-1"
-              >Land *</label
-              >
-              <InputText
-                  id="country"
-                  v-model="formData.country"
-                  placeholder="Land"
-                  class="w-full"
-              />
+              <label for="country" class="block text-sm font-medium mb-1">Land *</label>
+              <InputText id="country" v-model="formData.country" placeholder="Land" class="w-full"/>
             </div>
-
-            <Button
-                type="submit"
-                label="Registrieren"
-                :loading="loading"
-                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
-            />
-
-            <!-- Erfolgsnachricht -->
-            <p v-if="success" class="text-green-500 mt-4">
-              Konto erfolgreich erstellt!
-            </p>
-            <p v-if="error" class="text-red-500 mt-4">
-              Fehler: {{ errorMessage }}
-            </p>
+            <Button type="submit" label="Registrieren" :loading="loading" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"/>
           </form>
+
           <p class="mt-4">
-            <Button class="text-blue-500 hover:underline" @click="toggleForm"
-            >Zurück zum Login</Button
-            >
+            <Button class="text-blue-500 hover:underline" @click="toggleForm">Zurück zum Login</Button>
           </p>
         </div>
       </div>
@@ -354,17 +300,10 @@ const onRegister = async () => {
 
     <!-- Falls eingeloggt: Einfach nur Logout-Button anzeigen -->
     <div v-else>
-      <div v-if="formData && formData.username">
-        Willkommen {{ formData.username }}!
+      <div class = "mb-4">
+        Willkommen {{ userNameStorage }}! Bearbeite hier deine Userdaten oder Logge dich aus
       </div>
-      <Button
-          label="Ausloggen"
-          class="bg-red-500 hover:bg-red-600 text-white py-2 rounded"
-          :loading="loading"
-          @click="onLogout"
-      />
-      <!-- Fehlermeldung, falls Logout schiefgeht -->
-      <p v-if="errorMessage" class="text-red-500 mt-4">{{ errorMessage }}</p>
+      <Button label="Ausloggen" class="bg-[#15191ee4] rounded" :loading="loading" @click="onLogout"/>
     </div>
   </div>
 </template>
