@@ -7,6 +7,9 @@ import Password from "primevue/password";
 import Toast from "primevue/toast";
 import { useToast } from 'primevue/usetoast';
 
+// Initialisiere den Router
+const router = useRouter();
+
 // Für Meldungen
 const toast = useToast();
 
@@ -48,8 +51,6 @@ const toggleForm = () => {
 
 // Computed-Eigenschaft: true, wenn ein Token vorhanden ist
 const isLoggedIn = computed(() => !!userToken.value);
-
-
 
 // Login-Logik
 const onLogin = async () => {
@@ -113,14 +114,20 @@ const onLogout = async () => {
       method: "DELETE",
     });
     if (!response.ok) throw new Error("Logout fehlgeschlagen");
+
+    //speicher löschen
     localStorage.clear();
-    formData.username = ""; // optional: weitere Felder leeren
+    formData.username = "";
+
     toast.add({
       severity: 'success',
       summary: 'Erfolg',
       detail: 'Erfolreich ausgeloggt!',
       life: 3000 // 3 Sekunden sichtbar
     });
+
+    router.push('/'); // Hier wird zur Index-Seite navigiert
+
   } catch (err: any) {
     errorMessage.value = err.message || "Ein Fehler beim Logout ist aufgetreten.";
     toast.add({

@@ -54,13 +54,11 @@ const items = computed(() => [
   {
     label: 'Wunschliste',
     icon: 'pi pi-heart',
-    // Disable the Menüeintrag, wenn keine E-Mail im Storage ist
     disabled: !userEmail.value,
     command: () => {
       if (userEmail.value) {
         router.push(`/wishlist/${userEmail.value}`)
       } else {
-        // Optional: Zeige eine Nachricht oder öffne das Login-Dialog
         visibleProfile.value = true
       }
     }
@@ -73,7 +71,6 @@ const items = computed(() => [
       if (userEmail.value) {
         router.push(`/shoppingcart/${userEmail.value}`)
       } else {
-        // Optional: Zeige eine Nachricht oder öffne das Login-Dialog
         visibleProfile.value = true
       }
     }
