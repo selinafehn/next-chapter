@@ -75,8 +75,7 @@ async function fetchBookByIsbn() {
   <Header />
   <Navbanner />
 
-  <Toast /> <!-- PrimeVue Toast-Komponente für Benachrichtigungen -->
-
+  <Toast />
   <div class="container mx-auto p-4">
     <!-- Header -->
     <h1 class="text-2xl font-bold mb-4 text-center">Hier ist deine Wishlist, {{ userEmail }}</h1>
@@ -112,7 +111,6 @@ async function fetchBookByIsbn() {
         />
       </div>
     </div>
-
     <!-- Wenn das books-Array leer ist oder gar nichts da ist -->
     <div v-else class="text-center text-gray-500">
       <p>Keine Bücher in der Wishlist vorhanden.</p>

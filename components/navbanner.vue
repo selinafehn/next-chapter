@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
 const router = useRouter()
@@ -24,7 +24,7 @@ const categories = ref([
 ])
 
 // Menüeinträge
-const items = [
+const items = computed(() => [
   {
     label: 'Home',
     icon: 'pi pi-home',
@@ -39,6 +39,8 @@ const items = [
       label: category.name,
       command: () => {
         selectedCategory.value = category.name
+        // Optional: Navigiere zu einer Kategorie-Seite
+        // router.push(`/books/${category.name}`)
       }
     }))
   },
@@ -52,18 +54,31 @@ const items = [
   {
     label: 'Wunschliste',
     icon: 'pi pi-heart',
+    // Disable the Menüeintrag, wenn keine E-Mail im Storage ist
+    disabled: !userEmail.value,
     command: () => {
-      router.push(`/wishlist/${userEmail.value}`)
+      if (userEmail.value) {
+        router.push(`/wishlist/${userEmail.value}`)
+      } else {
+        // Optional: Zeige eine Nachricht oder öffne das Login-Dialog
+        visibleProfile.value = true
+      }
     }
   },
   {
     label: 'Warenkorb',
     icon: 'pi pi-shopping-cart',
+    disabled: !userEmail.value,
     command: () => {
-      router.push(`/shoppingcart/${userEmail.value}`)
+      if (userEmail.value) {
+        router.push(`/shoppingcart/${userEmail.value}`)
+      } else {
+        // Optional: Zeige eine Nachricht oder öffne das Login-Dialog
+        visibleProfile.value = true
+      }
     }
   }
-]
+])
 </script>
 
 <template>
