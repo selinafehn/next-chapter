@@ -102,11 +102,6 @@ const isbn = route.params.isbn
 const book = ref(null)
 const list = ref(null)
 
-// Beispielwert für eine Beschreibung, falls sie nicht vom Backend kommt:
-const fallbackDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Pellentesque at luctus erat, nec facilisis dui. Fusce tristique tristique turpis, eget
-faucibus odio convallis sed.`
-
 onMounted(async () => {
   await fetchBook()
 })
@@ -118,15 +113,12 @@ async function fetchBook() {
       throw new Error('Fehler beim Laden des Buches')
     }
     const data = await response.json()
-    // Falls keine Beschreibung in der API, dann eigenen Fallback nutzen
-    data.description = data.description || fallbackDescription
     book.value = data
   } catch (error) {
     console.error('Fehler:', error)
     book.value = null
   }
 }
-
 
 async function addToWishlist() {
   try {
@@ -145,15 +137,22 @@ async function addToWishlist() {
     // Falls du irgendeine Rückgabe verarbeiten willst:
     const data = await response.json()
     console.log('Wishlist-Response:', data)
+    toast.add({
+      severity: 'success',
+      summary: 'Erfolg',
+      detail: 'Das Buch wurde deiner Wunschliste hinzugefügt!',
+      life: 3000 // 3 Sekunden sichtbar
+    });
   } catch (error) {
     console.error('Fehler:', error)
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: 'Konnte nicht zur Wunschliste hinzugefügt werden, melde dich zuerst an',
+      life: 3000 // 3 Sekunden sichtbar
+    });
   }
-  toast.add({
-    severity: 'success',
-    summary: 'Erfolg',
-    detail: 'Das Buch wurde deiner Wunschliste hinzugefügt!',
-    life: 3000 // 3 Sekunden sichtbar
-  });
+
 }
 
 
@@ -174,15 +173,22 @@ async function addToCart() {
     // Falls du irgendeine Rückgabe verarbeiten willst:
     const data = await response.json()
     console.log('Wishlist-Response:', data)
+    toast.add({
+      severity: 'success',
+      summary: 'Erfolg',
+      detail: 'Das Buch wurde deinem Warenkorb hinzugefügt!',
+      life: 3000 // 3 Sekunden sichtbar
+    });
   } catch (error) {
     console.error('Fehler:', error)
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: 'Konnte nicht zum Warenkorb hinzugefügt werden, melde dich zuerst an',
+      life: 3000 // 3 Sekunden sichtbar
+    });
   }
-  toast.add({
-    severity: 'success',
-    summary: 'Erfolg',
-    detail: 'Das Buch wurde deinem Warenkorb hinzugefügt!',
-    life: 3000 // 3 Sekunden sichtbar
-  });
+
 }
 
 </script>
