@@ -6,12 +6,14 @@ import {useStorage} from "@vueuse/core";
 import {onMounted, ref} from "vue";
 import {useRoute} from "#vue-router";
 const userEmailStorage = useStorage('auth_email', '');
+const userNameStorage = useStorage('auth_username', '');
 const route = useRoute()
 const isbn = route.params.isbn
 
 const toast = useToast()
 
 const userEmail = userEmailStorage.value;
+const userName = userNameStorage.value;
 
 onMounted(async () => {
   await fetchList()
@@ -77,7 +79,7 @@ async function deleteOneBookFromCart(isbn) {
 
   <div class="container mx-auto p-4">
     <!-- Header -->
-    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist dein Warenkorb, {{ userEmail }}</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist dein Warenkorb, {{ userName }}</h1>
 
       <!-- Wenn list.books existiert und nicht leer ist -->
     <div v-if="cart?.books && cart.books.length > 0" class="space-y-4">

@@ -8,6 +8,8 @@ const route = useRoute()
 import { useStorage } from '@vueuse/core';
 const userEmailStorage = useStorage('auth_email', '');
 const userEmail = userEmailStorage.value;
+const userNameStorage = useStorage('auth_username', '');
+const userName = userNameStorage.value;
 const list = ref(null)
 const book = ref(null)
 
@@ -78,7 +80,7 @@ async function fetchBookByIsbn() {
   <Toast />
   <div class="container mx-auto p-4">
     <!-- Header -->
-    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist deine Wishlist, {{ userEmail }}</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist deine Wishlist, {{ userName }}</h1>
 
     <!-- Wenn list.books existiert und nicht leer ist -->
     <div v-if="list?.books && list.books.length > 0" class="space-y-4">
