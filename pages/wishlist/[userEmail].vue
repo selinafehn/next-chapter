@@ -91,7 +91,7 @@ async function deleteOneBookFromWishlist(isbn) {
       <div
           v-for="book in list.books"
           :key="book.isbn"
-          class="flex items-center bg-white dark:bg-gray-500 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
+          class="flex items-center  border-gray-200 dark:border-gray-700 bg-gray-200 dark:bg-#2E2D2DFF rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
       >
         <!-- Bild des Buches -->
         <img
@@ -102,9 +102,9 @@ async function deleteOneBookFromWishlist(isbn) {
         <!-- Informationen zum Buch -->
         <div class="flex-1">
           <h2 class="text-lg font-semibold">{{ book.title }}</h2>
-          <p class="text-gray-700"><span class="font-medium">Autor:</span> {{ book.author }}</p>
-          <p class="text-gray-700"><span class="font-medium">Genre:</span> {{ book.genre }}</p>
-          <p class="text-gray-700 font-bold"><span class="font-bold">Preis:</span> {{ book.price }} €</p>
+          <p class="text-gray-700 dark:text-gray-300"><span class="font-medium">Autor:</span> {{ book.author }}</p>
+          <p class="text-gray-700 dark:text-gray-300"><span class="font-medium">Genre:</span> {{ book.genre }}</p>
+          <p class="text-gray-700 dark:text-gray-300 font-bold"><span class="font-bold">Preis:</span> {{ book.price }} €</p>
         </div>
         <Button
             icon="pi pi-trash"

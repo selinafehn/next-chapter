@@ -64,7 +64,7 @@ async function deleteOneBookFromCart(isbn) {
 
   <div class="container mx-auto p-4">
     <!-- Header -->
-    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist dein Warenkorb, {{  }}</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist dein Warenkorb, {{ userName }}</h1>
 
       <!-- Wenn list.books existiert und nicht leer ist -->
     <div v-if="cart?.books && cart.books.length > 0" class="space-y-4">
@@ -72,7 +72,7 @@ async function deleteOneBookFromCart(isbn) {
       <div
           v-for="book in cart.books"
           :key="book.isbn"
-          class="flex items-center bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 dark:bg-gray-500"
+          class="flex items-center rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300 border-gray-200 dark:border-gray-700 bg-gray-200 dark:bg-#2E2D2DFF"
       >
         <!-- Bild des Buches -->
         <img
@@ -83,9 +83,9 @@ async function deleteOneBookFromCart(isbn) {
         <!-- Informationen zum Buch -->
         <div class="flex-1">
           <h2 class="text-lg font-semibold">{{ book.title }}</h2>
-          <p class="text-gray-700"><span class="font-medium">Autor:</span> {{ book.author }}</p>
-          <p class="text-gray-700"><span class="font-medium">Genre:</span> {{ book.genre }}</p>
-          <p class="text-gray-700 font-bold"><span class="font-bold">Preis:</span> {{ book.price }} €</p>
+          <p class="text-gray-700 dark:text-gray-300"><span class="font-medium">Autor:</span> {{ book.author }}</p>
+          <p class="text-gray-700 dark:text-gray-300"><span class="font-medium">Genre:</span> {{ book.genre }}</p>
+          <p class="text-gray-700 dark:text-gray-300 font-bold"><span class="font-bold">Preis:</span> {{ book.price }} €</p>
         </div>
         <!-- Löschen-Symbol -->
         <Button
