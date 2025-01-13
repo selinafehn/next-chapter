@@ -7,6 +7,7 @@ import Header from "~/components/header.vue";
   <Header/>
   <navbanner/>
   <BookDisplay/>
+  <Footer/>
 </template>
 
 <style scoped>

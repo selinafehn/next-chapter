@@ -1,16 +1,4 @@
 <script setup lang="ts">
-
-import { ref } from "vue";
-
-const selectedGenre = ref();
-const genres = ref([
-  { name: 'Romane' },
-  { name: 'Fantasy'},
-  { name: 'Selbstentwicklung'},
-  { name: 'Lehrbücher'},
-  { name: 'Thriller'}
-]);
-
 </script>
 
 
