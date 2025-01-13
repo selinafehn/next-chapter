@@ -1,11 +1,12 @@
-<script setup>
+<script setup lang=ts>
 import { ref, onMounted } from 'vue';
 const books = ref([]);
 
 const fetchBooks = async () => {
   let data = null;
   try {
-    const response = await fetch('https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all');
+    let genre = "";
+    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all?genre=${genre}`);
     if (!response.ok) throw new Error('API Fehler');
     data = await response.json();
     books.value = data.books || [];
@@ -15,22 +16,22 @@ const fetchBooks = async () => {
 
 onMounted(async () => {
   await fetchBooks();
-});
+})
 
 </script>
 
 <template>
-  <div class="p-6 bg-gray-50 dark:bg-black min-h-screen">
+  <div class="p-6  min-h-screen">
     <Carousel
         :value="books"
         :numVisible="4"
         :numScroll="2"
-        class="text-gray-900 dark:text-gray-100 p-5 pb-4"
+        class="text-gray-900 dark:text-gray-200 p-5 pb-4"
     >
 
       <template #item="slotProps">
         <NuxtLink :to="`/book-detail/${slotProps.data.isbn}`" class="no-underline">
-        <div class="flex flex-col items-center border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-white dark:bg-gray-800 shadow-md transition-shadow hover:shadow-lg w-60 mx-auto h-full">
+        <div class="flex flex-col items-center border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-200 dark:bg-#2E2D2DFF shadow-md transition-shadow hover:shadow-lg w-60 mx-auto h-full">
           <img
               :src="slotProps.data.imageUrlL || '/img.png'"
               :alt="slotProps.data.title"

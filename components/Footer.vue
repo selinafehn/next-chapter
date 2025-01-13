@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <footer class="flex justify-between items-center p-4 bg-gray-100 shadow-md rounded-md mt-4">
+  <footer class="flex justify-between items-center p-4 shadow-md rounded-md mt-4">
     <!-- Name der App -->
     <span class="text-gray-700 font-semibold">NextChapter</span>
 

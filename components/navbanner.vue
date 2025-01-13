@@ -10,18 +10,20 @@ const visibleProfile = ref(false)
 // Logged-in-User
 const userEmail = useStorage('auth_email', '')
 
-// Kategorie-Auswahl
-const selectedCategory = ref()
 
 // Kategorien
 const categories = ref([
-  { name: 'Romane' },
-  { name: 'Krimi und Thriller' },
-  { name: 'Kinder- und Jugend' },
-  { name: 'Sachbücher' },
-  { name: 'Garten und Pflanzen' },
-  { name: 'Politik und Gesellschaft' }
+  { name: 'Alle Bücher' },
+  { name: 'Thriller' },
+  { name: 'Historical Fiction' },
+  { name: 'Fantasy' },
+  { name: 'Literary Fiction' },
+  { name: 'Self Help' },
+  { name: 'History' },
+  { name: 'Fiction' }
 ])
+// Kategorie-Auswahl
+const selectedCategory = ref('Alle Bücher')
 
 // Menüeinträge
 const items = computed(() => [

@@ -129,20 +129,18 @@ async function addToWishlist() {
           headers: { 'Content-Type': 'application/json' }
         }
     )
-
-    if (!response.ok) {
-      throw new Error('Fehler beim Hinzufügen zur Wishlist')
-    }
-
-    // Falls du irgendeine Rückgabe verarbeiten willst:
-    const data = await response.json()
-    console.log('Wishlist-Response:', data)
     toast.add({
       severity: 'success',
       summary: 'Erfolg',
       detail: 'Das Buch wurde deiner Wunschliste hinzugefügt!',
       life: 3000 // 3 Sekunden sichtbar
     });
+    if (!response.ok) {
+      throw new Error('Fehler beim Hinzufügen zur Wishlist')
+    }
+
+    const data = await response.json()
+    console.log('Wishlist-Response:', data)
   } catch (error) {
     console.error('Fehler:', error)
     toast.add({
@@ -165,30 +163,30 @@ async function addToCart() {
           headers: { 'Content-Type': 'application/json' },
         }
     )
-
-    if (!response.ok) {
-      throw new Error('Fehler beim Hinzufügen zur Wishlist')
-    }
-
-    // Falls du irgendeine Rückgabe verarbeiten willst:
-    const data = await response.json()
-    console.log('Wishlist-Response:', data)
     toast.add({
       severity: 'success',
       summary: 'Erfolg',
       detail: 'Das Buch wurde deinem Warenkorb hinzugefügt!',
       life: 3000 // 3 Sekunden sichtbar
     });
-  } catch (error) {
-    console.error('Fehler:', error)
+    if (!response.ok) {
+      throw new Error('Fehler beim Hinzufügen zur Wishlist')
+
+    }
     toast.add({
       severity: 'error',
       summary: 'Fehler',
       detail: 'Konnte nicht zum Warenkorb hinzugefügt werden, melde dich zuerst an',
       life: 3000 // 3 Sekunden sichtbar
     });
-  }
 
+    // Falls du irgendeine Rückgabe verarbeiten willst:
+    const data = await response.json()
+    console.log('Wishlist-Response:', data)
+  } catch (error) {
+    console.error('Fehler:', error)
+
+  }
 }
 
 </script>
