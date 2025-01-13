@@ -20,6 +20,7 @@ onMounted(async () => {
 })
 
 const cart = ref(null)
+
 async function fetchList () {
   try {
     const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/shoppingcart?userEmail=${userEmail}`)
@@ -33,31 +34,14 @@ async function fetchList () {
   }
 }
 
-async function fetchBookByIsbn() {
-  try {
-    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book?isbn=${isbn}`)
-    if (!response.ok) {
-      throw new Error('Fehler beim Laden des Buches')
-    }
-    const data = await response.json()
-    cart.value = data
-  } catch (error) {
-    console.error('Fehler:', error)
-    cart.value = null
-  }
-}
-
-
 async function deleteOneBookFromCart(isbn) {
   try {
     const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}`, {
       method: 'DELETE'
     })
-
     if (!response.ok) {
       throw new Error('Fehler beim Entfernen des Buches aus der Wishlist')
     }
-
     // Buch lokal aus der Liste entfernen (kein Reload notwendig)
     cart.value.books = cart.value.books.filter(book => book.isbn !== isbn)
 
@@ -69,6 +53,7 @@ async function deleteOneBookFromCart(isbn) {
     toast.add({ severity: 'error', summary: 'Fehler', detail: 'Buch konnte nicht entfernt werden', life: 3000 })
   }
 }
+
 </script>
 
 <template>
@@ -79,7 +64,7 @@ async function deleteOneBookFromCart(isbn) {
 
   <div class="container mx-auto p-4">
     <!-- Header -->
-    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist dein Warenkorb, {{ userName }}</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist dein Warenkorb, {{  }}</h1>
 
       <!-- Wenn list.books existiert und nicht leer ist -->
     <div v-if="cart?.books && cart.books.length > 0" class="space-y-4">

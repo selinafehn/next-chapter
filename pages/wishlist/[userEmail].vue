@@ -1,4 +1,4 @@
-<script setup >
+<script setup lang ="ts">
 import { ref, onMounted } from 'vue'
 import Header from '~/components/header.vue'
 import Navbanner from '~/components/navbanner.vue'
@@ -33,6 +33,23 @@ async function fetchList () {
   }
 }
 
+async function addToCart(isbn) {
+  try {
+    const response = await fetch(
+        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}&quantity=1`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        })
+    if (!response.ok) {
+      throw new Error('Fehler beim Hinzufügen zur Wishlist')
+    }
+    list.value.books = list.value.books.filter(book => book.isbn !== isbn)
+
+    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch wurde dem Warenkorb hinzugefügt', life: 3000 })
+  } catch (error) {
+    console.log(error + response);
+  }
+}
 
 // Funktion zum Löschen eines Buches aus der Wishlist
 async function deleteOneBookFromWishlist(isbn) {
@@ -54,20 +71,6 @@ async function deleteOneBookFromWishlist(isbn) {
     console.error('Fehler:', error)
     // Fehlerbenachrichtigung anzeigen
     toast.add({ severity: 'error', summary: 'Fehler', detail: 'Buch konnte nicht entfernt werden', life: 3000 })
-  }
-}
-
-async function fetchBookByIsbn() {
-  try {
-    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book?isbn=${isbn}`)
-    if (!response.ok) {
-      throw new Error('Fehler beim Laden des Buches')
-    }
-    const data = await response.json()
-    book.value = data
-  } catch (error) {
-    console.error('Fehler:', error)
-    book.value = null
   }
 }
 
@@ -103,12 +106,18 @@ async function fetchBookByIsbn() {
           <p class="text-gray-700"><span class="font-medium">Genre:</span> {{ book.genre }}</p>
           <p class="text-gray-700 font-bold"><span class="font-bold">Preis:</span> {{ book.price }} €</p>
         </div>
-        <!-- Löschen-Symbol -->
         <Button
             icon="pi pi-trash"
             class="p-button-rounded p-button-danger ml-4"
             @click="deleteOneBookFromWishlist(book.isbn)"
             tooltip="Aus Wishlist entfernen"
+            tooltip-options="{position: 'top'}"
+        />
+        <Button
+            icon="pi pi-shopping-cart"
+            class="p-button-rounded p-button-warning ml-4"
+            @click="addToCart(book.isbn)"
+            tooltip="Zum Warenkorb hinzufügen"
             tooltip-options="{position: 'top'}"
         />
       </div>

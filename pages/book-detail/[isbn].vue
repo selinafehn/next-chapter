@@ -1,7 +1,6 @@
 <template>
   <Header />
   <navbanner />
-  <pre>{{ list }}</pre>
   <!-- Hauptcontainer -->
   <div class="max-w-4xl mx-auto my-8 p-4  ">
     <div v-if="book" class="flex flex-col md:flex-row gap-6 ">
@@ -22,7 +21,6 @@
           <span class="text-gray-600  dark:text-gray-100">Kein Cover</span>
         </div>
       </div>
-
       <!-- Buchinformationen -->
       <div class="flex flex-col justify-between">
         <div>
@@ -66,9 +64,9 @@
               }}
             </p>
             <Toast />
-            <Button class="dark:text-gray-100" @click="addToWishlist">Zur Wishlist hinzufügen</Button>
+            <Button class="dark:text-gray-100" @click="addToWishlist(isbn)">Zur Wishlist hinzufügen</Button>
             <p></p>
-            <Button class="dark:text-gray-100" @click="addToCart">Zum Warenkorb hinzufügen</Button>
+            <Button class="dark:text-gray-100" @click="addToCart(book.isbn)">Zum Warenkorb hinzufügen</Button>
 
           </div>
         </div>
@@ -120,72 +118,39 @@ async function fetchBook() {
   }
 }
 
-async function addToWishlist() {
+async function addToWishlist(isbn) {
   try {
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmailStorage.value}&isbn=${isbn}`,
-        {
+        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmailStorage.value}&isbn=${isbn}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' }
-        }
-    )
-    toast.add({
-      severity: 'success',
-      summary: 'Erfolg',
-      detail: 'Das Buch wurde deiner Wunschliste hinzugefügt!',
-      life: 3000 // 3 Sekunden sichtbar
-    });
+        })
     if (!response.ok) {
       throw new Error('Fehler beim Hinzufügen zur Wishlist')
     }
+    // Erfolgsmeldung anzeigen
+    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch wurde der Wishlist hinzugefügt', life: 3000 })
 
-    const data = await response.json()
-    console.log('Wishlist-Response:', data)
   } catch (error) {
-    console.error('Fehler:', error)
-    toast.add({
-      severity: 'error',
-      summary: 'Fehler',
-      detail: 'Konnte nicht zur Wunschliste hinzugefügt werden, melde dich zuerst an',
-      life: 3000 // 3 Sekunden sichtbar
-    });
+    toast.add({ severity: 'error', summary: 'Fehler', detail: 'Buch konnte nicht der Wishlist hinzugefügt werden', life: 3000 })
   }
-
 }
 
-
-async function addToCart() {
+async function addToCart(isbn) {
   try {
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}&quantity=1`,
-        {
+        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}&quantity=1`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-        }
-    )
-    toast.add({
-      severity: 'success',
-      summary: 'Erfolg',
-      detail: 'Das Buch wurde deinem Warenkorb hinzugefügt!',
-      life: 3000 // 3 Sekunden sichtbar
-    });
+        })
     if (!response.ok) {
       throw new Error('Fehler beim Hinzufügen zur Wishlist')
-
     }
-    toast.add({
-      severity: 'error',
-      summary: 'Fehler',
-      detail: 'Konnte nicht zum Warenkorb hinzugefügt werden, melde dich zuerst an',
-      life: 3000 // 3 Sekunden sichtbar
-    });
-
+    // Erfolgsmeldung anzeigen
+    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch wurde dem Warenkorb hinzugefügt', life: 3000 })
     // Falls du irgendeine Rückgabe verarbeiten willst:
-    const data = await response.json()
-    console.log('Wishlist-Response:', data)
   } catch (error) {
-    console.error('Fehler:', error)
-
+  console.log(error + response);
   }
 }
 
