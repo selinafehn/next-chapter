@@ -21,6 +21,8 @@ onMounted(async () => {
 </script>
 
 <template>
+
+
   <div class="p-6  min-h-screen">
     <Carousel
         :value="books"
@@ -38,7 +40,7 @@ onMounted(async () => {
               class="h-60 w-auto object-cover rounded mb-4"
           />
           <div class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-1 text-center">
-            Autor: {{ slotProps.data.title }}
+            {{ slotProps.data.title }}
           </div>
           <div class="text-sm text-gray-600 dark:text-gray-300 mt-1 text-center">
             Autor: {{ slotProps.data.author }}
