@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import Header from '~/components/header.vue'
 import Navbanner from '~/components/navbanner.vue'
-
 import {useStorage} from "@vueuse/core";
 import {onMounted, ref} from "vue";
 import {useRoute} from "#vue-router";
+
 const userEmailStorage = useStorage('auth_email', '');
 const userNameStorage = useStorage('auth_username', '');
 const route = useRoute()
 const isbn = route.params.isbn
-
 const toast = useToast()
-
 const userEmail = userEmailStorage.value;
 const userName = userNameStorage.value;
 
@@ -54,6 +52,24 @@ async function deleteOneBookFromCart(isbn) {
   }
 }
 
+async function checkoutBooks(){
+  try {
+  const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/order?userEmail=${userEmail}`, {
+    method: 'POST'
+  })
+    if (!response.ok) {
+      throw new Error('Fehler beim Bestellvorgang')
+    }
+    cart.value.books = [];
+    // Erfolgsmeldung anzeigen
+    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Bestellung erfolgreich', life: 3000 })
+  } catch (error) {
+    console.error('Fehler:', error)
+    // Fehlerbenachrichtigung anzeigen
+    toast.add({ severity: 'error', summary: 'Fehler', detail: 'Bestellung fehlgeschlagen', life: 3000 })
+  }
+}
+
 </script>
 
 <template>
@@ -86,6 +102,7 @@ async function deleteOneBookFromCart(isbn) {
           <p class="text-gray-700 dark:text-gray-300"><span class="font-medium">Autor:</span> {{ book.author }}</p>
           <p class="text-gray-700 dark:text-gray-300"><span class="font-medium">Genre:</span> {{ book.genre }}</p>
           <p class="text-gray-700 dark:text-gray-300 font-bold"><span class="font-bold">Preis:</span> {{ book.price }} €</p>
+          <p class="text-gray-700 dark:text-gray-300 font-bold"><span class="font-bold">Menge vorhanden:</span> {{ book.quantity }} €</p>
         </div>
         <!-- Löschen-Symbol -->
         <Button
@@ -96,8 +113,9 @@ async function deleteOneBookFromCart(isbn) {
             tooltip-options="{position: 'top'}"
         />
       </div>
-    </div>
 
+      <Button @click="checkoutBooks()" > Hier bestellen </Button>
+    </div>
     <!-- Wenn das books-Array leer ist oder gar nichts da ist -->
     <div v-else class="text-center text-gray-500">
       <p>Keine Bücher im Warenkorb vorhanden.</p>
@@ -106,5 +124,4 @@ async function deleteOneBookFromCart(isbn) {
 </template>
 
 <style scoped>
-
 </style>
