@@ -144,7 +144,7 @@ async function addToCart(isbn) {
           headers: { 'Content-Type': 'application/json' },
         })
     if (!response.ok) {
-      throw new Error('Fehler beim Hinzufügen zur Wishlist')
+      throw new Error('Fehler beim Hinzufügen zum Warenkorb')
     }
     // Erfolgsmeldung anzeigen
     toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch wurde dem Warenkorb hinzugefügt', life: 3000 })
