@@ -6,29 +6,29 @@ const totalRecords = 50;
 const page = ref(1);  // Achtung: PrimeVue verwendet 0-basierte Seiten, dein Backend vielleicht 1-basiert.
 const rows = ref(4);  // Anzahl Bücher pro Seite
 
+const selectedGenre = ref(''); // leere Zeichenkette anfangs
 
-async function fetchBooks(pageNumber: number, pageSize: number) {
+
+async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
   try {
-    const genre = ""; // oder was du an dein Backend schicken möchtest
-    // Beispiel-URL, an der man pageNumber & pageSize anhängt:
-    // ACHTUNG: Falls dein Backend 1-basiert ist, mußt du pageNumber 1-basiert übergeben.
+    const pageNumber = currentPage + 1; // PrimeVue => 0-based, Backend => 1-based
     const url = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error('Fehler beim Laden der Bücher');
+      throw new Error('API Fehler');
     }
+
     const data = await response.json();
+    books.value = data.books || [];
 
-    // Hier kommen nur die Bücher der angeforderten Seite.
-    books.value = data?.books || [];
-
-    // totalCount gibt an, wie viele Bücher insgesamt existieren (über alle Seiten hinweg).
-    // Der Server MUSS diesen Wert liefern.
-    totalRecords.value = data?.totalCount || 0;
+    // Gesamtzahl aus dem Backend, damit DataView weiß, wie viele Einträge es gibt
+    totalRecords.value = data.totalCount || 0;
   } catch (error) {
     console.error('Fehler beim Abrufen der Bücher:', error);
   }
 }
+
 
 function onPageChange(event: any) {
   // event.page ist 0-basiert (0 = Seite 1).
@@ -42,13 +42,23 @@ function onPageChange(event: any) {
 
 onMounted(() => {
   // Wir rufen page.value + 1 auf, wenn das Backend 1-basiert arbeitet.
-  fetchBooks(page.value + 1, rows.value);
+  fetchBooks(page.value + 1, rows.value, selectedGenre.value);
+});
+
+watch(selectedGenre, (newGenre) => {
+  page.value = 0;
+  fetchBooks(page.value, rows.value, newGenre);
 });
 </script>
 <template>
   <div class="p-6 min-h-screen">
-    <!-- Nur wenn du Layout-Umschaltung willst -->
-    <DataViewLayoutOptions v-model:layout="layout" class="mb-3" />
+
+    <select v-model="selectedGenre" class="mb-4 p-2 border rounded">
+      <option value="">Alle Genres</option>
+      <option value="Thriller">Thriller</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="History">History</option>
+    </select>
 
     <DataView
         :value="books"
