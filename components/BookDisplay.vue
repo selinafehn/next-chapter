@@ -46,6 +46,9 @@ onMounted(async () => {
           <div class="text-sm text-gray-500 dark:text-gray-400 mt-1 text-center">
             Verlag: {{ slotProps.data.publisher }}
           </div>
+          <div class="text-sm text-gray-500 dark:text-gray-400 mt-1 text-center">
+            Menge vorrätig: {{ slotProps.data.quantity }}
+          </div>
           <div class="text-lg font-semibold text-gray-800 dark:text-gray-100 text-center mt-2">
             {{ slotProps.data.price }} €
           </div>
