@@ -35,6 +35,10 @@
             <strong>Verlag: </strong>
             {{ book.publisher || 'Verlag unbekannt' }}
           </p>
+          <p class="text-base text-gray-700 dark:text-gray-100 mt-1">
+            <strong>Menge vorhanden: </strong>
+            {{ book.quantity || 'Nichts vorrätig' }}
+          </p>
           <p class="text-base text-gray-700 dark:text-gray-100 mt-1 mb-3">
             <strong>Preis: </strong>
             {{ book.price || 'Preis nicht verfügbar' }}
