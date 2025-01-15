@@ -16,19 +16,8 @@
     <div class="flex items-center gap-2 w-full">
       <!-- Darkmode -->
         <Darkmode/>
-      <!-- Suchleiste -->
-      <div class="flex w-full">
-        <InputText
-            placeholder="Suche nach Titel, Autor, Stichwort, ISBN"
-            class="flex-grow p-2 border border-gray-300 rounded-l-md outline-none focus:ring-2 focus:ring-gray-500"
-        />
-        <Button
-            icon="pi pi-search"
-            class="p-2 bg-gray-700 text-white hover:bg-gray-800 rounded-r-md"
-        />
       </div>
     </div>
-  </div>
 </template>
 
 

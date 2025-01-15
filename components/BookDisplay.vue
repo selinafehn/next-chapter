@@ -1,29 +1,25 @@
 <script setup lang=ts>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 const books = ref([]);
-const layout = ref('grid');
 const totalRecords = 50;
-const page = ref(1);  // Achtung: PrimeVue verwendet 0-basierte Seiten, dein Backend vielleicht 1-basiert.
+const page = ref(0);  // Achtung: PrimeVue verwendet 0-basierte Seiten, dein Backend vielleicht 1-basiert.
 const rows = ref(4);  // Anzahl Bücher pro Seite
+const searchQuery = ref('');
 
-const selectedGenre = ref(''); // leere Zeichenkette anfangs
-
-
-async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
+async function fetchBooks(currentPage = 0, pageSize = 4, genre = '', query='') {
   try {
     const pageNumber = currentPage + 1; // PrimeVue => 0-based, Backend => 1-based
-    const url = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
-
+    const url = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}&searchQuery=${searchQuery.value}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error('API Fehler');
     }
-
     const data = await response.json();
     books.value = data.books || [];
-
+    console.log('Total Count aus API a:', data.totalCount);
     // Gesamtzahl aus dem Backend, damit DataView weiß, wie viele Einträge es gibt
-    totalRecords.value = data.totalCount || 0;
+    totalRecords.value = data.totalCount ?? 0;
+    console.log('Total Count aus API b:', data.totalCount);
   } catch (error) {
     console.error('Fehler beim Abrufen der Bücher:', error);
   }
@@ -31,34 +27,74 @@ async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
 
 
 function onPageChange(event: any) {
-  // event.page ist 0-basiert (0 = Seite 1).
-  // event.rows = Anzahl pro Seite
+
   page.value = event.page;
   rows.value = event.rows;
 
-  // Backend ist i. d. R. 1-basiert => +1
-  fetchBooks(page.value + 1, rows.value);
+  fetchBooks(page.value + 1, rows.value, selectedGenre.value, searchQuery.value);
 }
 
 onMounted(() => {
+  const storedGenre = localStorage.getItem('selectedGenre');
+  if (storedGenre) {
+    selectedGenre.value = storedGenre;
+    fetchBooks(page.value, rows.value, storedGenre, searchQuery.value);
+  } else {
+    fetchBooks(page.value, rows.value, selectedGenre.value, searchQuery.value);
+  }
   // Wir rufen page.value + 1 auf, wenn das Backend 1-basiert arbeitet.
-  fetchBooks(page.value + 1, rows.value, selectedGenre.value);
+  fetchBooks(page.value + 1, rows.value, selectedGenre.value, searchQuery.value);
 });
 
+const selectedGenre = ref('');
+const genres = ref([
+  { label: 'Alle Bücher', value: '' },
+  { label: 'Thriller', value: 'Thriller' },
+  { label: 'Historical Fiction', value: 'Historical Fiction' },
+  { label: 'Fantasy', value: 'Fantasy' },
+  { label: 'Literary Fiction', value: 'Literary Fiction' },
+  { label: 'Self Help', value: 'Self Help' },
+  { label: 'History', value: 'History' },
+  { label: 'Fiction', value: 'Fiction' }
+]);
+
 watch(selectedGenre, (newGenre) => {
-  page.value = 0;
-  fetchBooks(page.value, rows.value, newGenre);
+  localStorage.setItem('selectedGenre', newGenre);
+  page.value = 0; // Optional: Zurück zur ersten Seite
+  fetchBooks(page.value, rows.value, newGenre, searchQuery.value);
 });
+
 </script>
 <template>
   <div class="p-6 min-h-screen">
 
-    <select v-model="selectedGenre" class="mb-4 p-2 border rounded">
-      <option value="">Alle Genres</option>
-      <option value="Thriller">Thriller</option>
-      <option value="Fantasy">Fantasy</option>
-      <option value="History">History</option>
-    </select>
+    <div class="flex flex-col md:flex-row items-center mb-4 space-y-2 md:space-y-0 md:space-x-4">
+
+      <!-- Genre-Select-Komponente -->
+      <Select
+          v-model="selectedGenre"
+          :options="genres"
+          option-label="label"
+          option-value="value"
+          placeholder="Select a Genre"
+          class="w-full md:w-48 h-10 border border-gray-300 rounded"
+      />
+
+      <!-- Suchfeld mit Neuladen-Button -->
+      <div class="flex flex-grow">
+        <InputText
+            v-model="searchQuery"
+            placeholder="Suche nach Titel, Autor, Stichwort, ISBN"
+            class="flex-grow h-10 p-2 border border-gray-300 rounded-l-md outline-none focus:ring-2 focus:ring-gray-500"
+        />
+        <Button
+            @click="fetchBooks(page.value, rows.value, selectedGenre.value, searchQuery.value)"
+            class="h-10 px-4 bg-gray-700 text-white rounded-r-md "
+        >
+          Neuladen
+        </Button>
+      </div>
+    </div>
 
     <DataView
         :value="books"
@@ -96,6 +132,9 @@ watch(selectedGenre, (newGenre) => {
                 </div>
                 <div class="text-sm text-gray-500 dark:text-gray-400 mt-1 text-center">
                   Verlag: {{ book.publisher }}
+                </div>
+                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1 text-center">
+                  Genre: {{ book.genre }}
                 </div>
                 <div class="text-sm text-gray-500 dark:text-gray-400 mt-1 text-center">
                   Menge vorrätig: {{ book.quantity }}

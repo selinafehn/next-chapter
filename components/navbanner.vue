@@ -11,20 +11,6 @@ const visibleProfile = ref(false)
 const userEmail = useStorage('auth_email', '')
 
 
-// Kategorien
-const categories = ref([
-  { name: 'Alle Bücher' },
-  { name: 'Thriller' },
-  { name: 'Historical Fiction' },
-  { name: 'Fantasy' },
-  { name: 'Literary Fiction' },
-  { name: 'Self Help' },
-  { name: 'History' },
-  { name: 'Fiction' }
-])
-// Kategorie-Auswahl
-const selectedCategory = ref('Alle Bücher')
-
 // Menüeinträge
 const items = computed(() => [
   {
@@ -33,18 +19,6 @@ const items = computed(() => [
     command: () => {
       router.push('/')
     }
-  },
-  {
-    label: 'Bücher',
-    icon: 'pi pi-book',
-    items: categories.value.map((category) => ({
-      label: category.name,
-      command: () => {
-        selectedCategory.value = category.name
-        // Optional: Navigiere zu einer Kategorie-Seite
-        // router.push(`/books/${category.name}`)
-      }
-    }))
   },
   {
     label: 'Profil',
