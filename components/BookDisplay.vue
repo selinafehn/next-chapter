@@ -1,7 +1,7 @@
 <script setup lang=ts>
 import { ref, onMounted, watch } from 'vue';
 const books = ref([]);
-const totalRecords = 50;
+const totalAmount = ref(10);
 const page = ref(0);  // Achtung: PrimeVue verwendet 0-basierte Seiten, dein Backend vielleicht 1-basiert.
 const rows = ref(4);  // Anzahl Bücher pro Seite
 const searchQuery = ref('');
@@ -18,7 +18,7 @@ async function fetchBooks(currentPage = 0, pageSize = 4, genre = '', query='') {
     books.value = data.books || [];
     console.log('Total Count aus API a:', data.totalCount);
     // Gesamtzahl aus dem Backend, damit DataView weiß, wie viele Einträge es gibt
-    totalRecords.value = data.totalCount ?? 0;
+    totalAmount.value = data.totalCount ?? 0;
     console.log('Total Count aus API b:', data.totalCount);
   } catch (error) {
     console.error('Fehler beim Abrufen der Bücher:', error);
@@ -80,7 +80,7 @@ watch(selectedGenre, (newGenre) => {
           class="w-full md:w-48 h-10 border border-gray-300 rounded"
       />
 
-      <!-- Suchfeld mit Neuladen-Button -->
+      <!-- Suchfeld mit Suchen-Button -->
       <div class="flex flex-grow">
         <InputText
             v-model="searchQuery"
@@ -91,7 +91,7 @@ watch(selectedGenre, (newGenre) => {
             @click="fetchBooks(page.value, rows.value, selectedGenre.value, searchQuery.value)"
             class="h-10 px-4 bg-gray-700 text-white rounded-r-md "
         >
-          Neuladen
+          Suchen
         </Button>
       </div>
     </div>
@@ -100,7 +100,7 @@ watch(selectedGenre, (newGenre) => {
         :value="books"
         paginator
         :rows="rows"
-        :totalRecords="totalRecords"
+        :totalAmount="totalAmount"
         @page="onPageChange"
         :layout="'grid'"
     >
