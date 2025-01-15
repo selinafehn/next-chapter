@@ -113,7 +113,7 @@ async function checkoutBooks(){
             tooltip-options="{position: 'top'}"
         />
       </div>
-
+      <h2 class="text-xl font-semibold"> Gesamter Preis: {{ cart.total_amount }} €</h2>
       <Button @click="checkoutBooks()" > Hier bestellen </Button>
     </div>
     <!-- Wenn das books-Array leer ist oder gar nichts da ist -->
