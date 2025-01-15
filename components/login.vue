@@ -126,7 +126,10 @@ const onLogout = async () => {
       life: 3000 // 3 Sekunden sichtbar
     });
 
-    router.push('/'); // Hier wird zur Index-Seite navigiert
+    setTimeout(() => {
+      window.location.reload();
+    }, 300);
+    router.push('/');
 
   } catch (err: any) {
     errorMessage.value = err.message || "Ein Fehler beim Logout ist aufgetreten.";
