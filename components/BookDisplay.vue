@@ -1,12 +1,12 @@
 <script setup lang=ts>
 import { ref, onMounted, watch } from 'vue';
 const books = ref([]);
-const totalAmount = ref(10);
+const totalRecords = ref('');
 const page = ref(0);  // Achtung: PrimeVue verwendet 0-basierte Seiten, dein Backend vielleicht 1-basiert.
 const rows = ref(4);  // Anzahl Bücher pro Seite
 const searchQuery = ref('');
 
-async function fetchBooks(currentPage = 0, pageSize = 4, genre = '', query='') {
+async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
   try {
     const pageNumber = currentPage + 1; // PrimeVue => 0-based, Backend => 1-based
     const url = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}&searchQuery=${searchQuery.value}`;
@@ -16,10 +16,7 @@ async function fetchBooks(currentPage = 0, pageSize = 4, genre = '', query='') {
     }
     const data = await response.json();
     books.value = data.books || [];
-    console.log('Total Count aus API a:', data.totalCount);
-    // Gesamtzahl aus dem Backend, damit DataView weiß, wie viele Einträge es gibt
-    totalAmount.value = data.totalCount ?? 0;
-    console.log('Total Count aus API b:', data.totalCount);
+    totalRecords.value = data.totalAmount ?? 0;
   } catch (error) {
     console.error('Fehler beim Abrufen der Bücher:', error);
   }
@@ -31,19 +28,19 @@ function onPageChange(event: any) {
   page.value = event.page;
   rows.value = event.rows;
 
-  fetchBooks(page.value + 1, rows.value, selectedGenre.value, searchQuery.value);
+  fetchBooks(page.value + 1, rows.value, selectedGenre.value);
 }
 
 onMounted(() => {
   const storedGenre = localStorage.getItem('selectedGenre');
   if (storedGenre) {
     selectedGenre.value = storedGenre;
-    fetchBooks(page.value, rows.value, storedGenre, searchQuery.value);
+    fetchBooks(page.value, rows.value, storedGenre);
   } else {
-    fetchBooks(page.value, rows.value, selectedGenre.value, searchQuery.value);
+    fetchBooks(page.value, rows.value, selectedGenre.value);
   }
   // Wir rufen page.value + 1 auf, wenn das Backend 1-basiert arbeitet.
-  fetchBooks(page.value + 1, rows.value, selectedGenre.value, searchQuery.value);
+  fetchBooks(page.value + 1, rows.value, selectedGenre.value);
 });
 
 const selectedGenre = ref('');
@@ -61,7 +58,7 @@ const genres = ref([
 watch(selectedGenre, (newGenre) => {
   localStorage.setItem('selectedGenre', newGenre);
   page.value = 0; // Optional: Zurück zur ersten Seite
-  fetchBooks(page.value, rows.value, newGenre, searchQuery.value);
+  fetchBooks(page.value, rows.value, newGenre);
 });
 
 </script>
@@ -80,7 +77,7 @@ watch(selectedGenre, (newGenre) => {
           class="w-full md:w-48 h-10 border border-gray-300 rounded"
       />
 
-      <!-- Suchfeld mit Suchen-Button -->
+      <!-- Suchfeld mit Neuladen-Button -->
       <div class="flex flex-grow">
         <InputText
             v-model="searchQuery"
@@ -88,7 +85,7 @@ watch(selectedGenre, (newGenre) => {
             class="flex-grow h-10 p-2 border border-gray-300 rounded-l-md outline-none focus:ring-2 focus:ring-gray-500"
         />
         <Button
-            @click="fetchBooks(page.value, rows.value, selectedGenre.value, searchQuery.value)"
+            @click="fetchBooks(page.value, rows.value, selectedGenre.value)"
             class="h-10 px-4 bg-gray-700 text-white rounded-r-md "
         >
           Suchen
@@ -100,7 +97,7 @@ watch(selectedGenre, (newGenre) => {
         :value="books"
         paginator
         :rows="rows"
-        :totalAmount="totalAmount"
+        :totalRecords="totalRecords"
         @page="onPageChange"
         :layout="'grid'"
     >
