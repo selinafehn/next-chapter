@@ -49,6 +49,7 @@ async function addToCart(isbn) {
   } catch (error) {
     console.log(error + response);
   }
+  deleteOneBookFromWishlist(isbn);
 }
 
 // Funktion zum Löschen eines Buches aus der Wishlist
