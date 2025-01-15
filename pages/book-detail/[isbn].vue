@@ -123,24 +123,66 @@ async function fetchBook() {
 }
 
 async function addToWishlist(isbn) {
+  // Überprüfen, ob ein Token im localStorage vorhanden ist
+  const token = localStorage.getItem('token');
+  if (!token) {
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: 'User ist nicht authentifiziert. Bitte zuerst anmelden.',
+      life: 3000
+    });
+    return; // Funktion beenden, wenn kein Token vorhanden ist
+  }
+
   try {
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmailStorage.value}&isbn=${isbn}`, {
+        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmailStorage.value}&isbn=${isbn}`,
+        {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' }
-        })
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Token im Header senden
+          }
+        }
+    );
+
     if (!response.ok) {
-      throw new Error('Fehler beim Hinzufügen zur Wishlist')
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Fehler beim Hinzufügen zur Wishlist');
     }
+
     // Erfolgsmeldung anzeigen
-    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch wurde der Wishlist hinzugefügt', life: 3000 })
+    toast.add({
+      severity: 'success',
+      summary: 'Erfolgreich',
+      detail: 'Buch wurde der Wishlist hinzugefügt',
+      life: 3000
+    });
 
   } catch (error) {
-    toast.add({ severity: 'error', summary: 'Fehler', detail: 'Buch konnte nicht der Wishlist hinzugefügt werden', life: 3000 })
+    // Fehlerbehandlung mit detaillierter Nachricht
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: error.message || 'Buch konnte nicht der Wishlist hinzugefügt werden',
+      life: 3000
+    });
   }
 }
 
+
 async function addToCart(isbn) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: 'User ist nicht authentifiziert. Bitte zuerst anmelden.',
+      life: 3000
+    });
+    return; // Funktion beenden, wenn kein Token vorhanden ist
+  }
   try {
     const response = await fetch(
         `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}&quantity=1`, {
