@@ -197,6 +197,7 @@ const onRegister = async () => {
                   id="email"
                   v-model="email"
                   type="email"
+                  required
                   placeholder="E-Mail Adresse"
                   class="w-full pl-3 py-2 rounded border border-gray-300 focus:border-gray-700"
               />
@@ -215,6 +216,7 @@ const onRegister = async () => {
                   v-model="password"
                   placeholder="Passwort"
                   toggleMask
+                  required
                   :feedback="false"
                   class="w-full"
                   inputClass="w-full py-2 px-3 border border-gray-300 rounded focus:border-gray-700"
@@ -245,55 +247,55 @@ const onRegister = async () => {
             <!-- E-Mail -->
             <div class="mb-3">
               <label for="email" class="block text-sm font-medium mb-1">E-Mail *</label>
-              <InputText id="email" v-model="formData.email" placeholder="E-Mail Adresse" class="w-full"/>
+              <InputText id="email" required v-model="formData.email" placeholder="E-Mail Adresse" class="w-full"/>
             </div>
 
             <!-- Benutzername -->
             <div class="mb-3">
               <label for="username" class="block text-sm font-medium mb-1">Benutzername *</label>
-              <InputText id="username" v-model="formData.username" placeholder="Benutzername" class="w-full"/>
+              <InputText id="username" required v-model="formData.username" placeholder="Benutzername" class="w-full"/>
             </div>
 
             <!-- Vorname -->
             <div class="mb-3">
               <label for="firstName" class="block text-sm font-medium mb-1">Vorname *</label>
-              <InputText id="firstName" v-model="formData.firstName" placeholder="Vorname" class="w-full"/>
+              <InputText id="firstName" required v-model="formData.firstName" placeholder="Vorname" class="w-full"/>
             </div>
 
             <!-- Nachname -->
             <div class="mb-3">
               <label for="lastName" class="block text-sm font-medium mb-1">Nachname *</label>
-              <InputText id="lastName" v-model="formData.lastName" placeholder="Nachname" class="w-full"/>
+              <InputText id="lastName" required v-model="formData.lastName" placeholder="Nachname" class="w-full"/>
             </div>
 
             <!-- Passwort -->
             <div class="mb-3">
               <label for="password" class="block text-sm font-medium mb-1">Passwort *</label>
-              <Password id="password" v-model="formData.password" placeholder="Passwort" toggleMask class="w-full"/>
+              <Password id="password" required v-model="formData.password" placeholder="Passwort" toggleMask class="w-full"/>
             </div>
 
             <!-- Straße -->
             <div class="mb-3">
               <label for="street" class="block text-sm font-medium mb-1">Straße *</label>
-              <InputText id="street" v-model="formData.street" placeholder="Straße" class="w-full"/>
+              <InputText id="street" required v-model="formData.street" placeholder="Straße" class="w-full"/>
             </div>
 
             <!-- Stadt -->
             <div class="mb-3">
               <label for="city" class="block text-sm font-medium mb-1">Stadt *</label>
-              <InputText id="city" v-model="formData.city" placeholder="Stadt" class="w-full"/>
+              <InputText id="city" required v-model="formData.city" placeholder="Stadt" class="w-full"/>
             </div>
 
             <!-- Postleitzahl -->
             <div class="mb-3">
               <label for="postalCode" class="block text-sm font-medium mb-1">Postleitzahl *</label>
-              <InputText id="postalCode" v-model="formData.postalCode" placeholder="Postleitzahl" class="w-full"/>
+              <InputText id="postalCode" required v-model="formData.postalCode" placeholder="Postleitzahl" class="w-full"/>
             </div>
 
             <!-- Land -->
             <div class="mb-3">
               <label for="country" class="block text-sm font-medium mb-1">Land *</label>
-              <InputText id="country" v-model="formData.country" placeholder="Land" class="w-full"/>
+              <InputText id="country" required v-model="formData.country" placeholder="Land" class="w-full"/>
             </div>
             <Button type="submit" label="Registrieren" :loading="loading" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"/>
           </form>
