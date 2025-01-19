@@ -102,7 +102,7 @@ async function checkoutBooks(){
           <p class="text-gray-700 dark:text-gray-300"><span class="font-medium">Autor:</span> {{ book.author }}</p>
           <p class="text-gray-700 dark:text-gray-300"><span class="font-medium">Genre:</span> {{ book.genre }}</p>
           <p class="text-gray-700 dark:text-gray-300 font-bold"><span class="font-bold">Preis:</span> {{ book.price }} €</p>
-          <p class="text-gray-700 dark:text-gray-300 font-bold"><span class="font-bold">Menge vorhanden:</span> {{ book.quantity }}</p>
+          <p class="text-gray-700 dark:text-gray-300 font-bold"><span class="font-bold">Menge im Warenkorb:</span> {{ book.quantity }}</p>
         </div>
         <!-- Löschen-Symbol -->
         <Button
