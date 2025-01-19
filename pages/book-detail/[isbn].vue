@@ -97,6 +97,7 @@ import { useToast } from 'primevue/usetoast';
 const toast = useToast();
 
 const userEmailStorage = useStorage('auth_email', '');
+const userTokenStorage = useStorage('auth_token', '');
 
 const userEmail = userEmailStorage.value;
 const route = useRoute()
@@ -123,8 +124,9 @@ async function fetchBook() {
 }
 
 async function addToWishlist(isbn) {
+  const userEmail = userEmailStorage.value;
+  const token = userTokenStorage.value;
   // Überprüfen, ob ein Token im localStorage vorhanden ist
-  const token = localStorage.getItem('token');
   if (!token) {
     toast.add({
       severity: 'error',
@@ -137,7 +139,7 @@ async function addToWishlist(isbn) {
 
   try {
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmailStorage.value}&isbn=${isbn}`,
+        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmail}&isbn=${isbn}`,
         {
           method: 'POST',
           headers: {
@@ -172,8 +174,10 @@ async function addToWishlist(isbn) {
 }
 
 
+
 async function addToCart(isbn) {
-  const token = localStorage.getItem('token');
+  const userEmail = userEmailStorage.value;
+  const token = userTokenStorage.value;
   if (!token) {
     toast.add({
       severity: 'error',

@@ -26,6 +26,7 @@ const successMessage = ref("");
 const userEmailStorage = useStorage('auth_email', '');
 const userNameStorage = useStorage('auth_username', '');
 
+
 // Token wird jetzt in localStorage gespeichert
 const userToken = useStorage("auth_token", "");
 
@@ -53,6 +54,7 @@ const toggleForm = () => {
 const isLoggedIn = computed(() => !!userToken.value);
 
 // Login-Logik
+// Login-Logik
 const onLogin = async () => {
   loading.value = true;
   errorMessage.value = "";
@@ -70,19 +72,21 @@ const onLogin = async () => {
 
     // Beispiel: Aus dem Response den Token und evtl. Username auslesen
     const data = await response.json();
-    // Angenommen der Server gibt ein Objekt mit { token: '...', username: '...' } zurück
+
+    // Wenn ein Token vorhanden ist, schreibe ihn in userToken (-> landet automatisch im localStorage)
     if (data.token) {
       userToken.value = data.token;
     }
-    if (data.username) {
-      userNameStorage.value = data.username;     // <-- username speichern
-    } else {
-      userNameStorage.value = email.value;       // Oder E-Mail als Fallback
-    }
-    userEmailStorage.value = email.value;         // <-- E-Mail speichern
 
-    userToken.value = data.token     // token speichern
-    userEmailStorage.value = email.value  // E-Mail speichern
+    // Username oder Fallback
+    if (data.username) {
+      userNameStorage.value = data.username;
+    } else {
+      userNameStorage.value = email.value;
+    }
+
+    // E-Mail in localStorage
+    userEmailStorage.value = email.value;
 
     successMessage.value = "Login erfolgreich!";
     toast.add({
@@ -104,6 +108,7 @@ const onLogin = async () => {
     loading.value = false;
   }
 };
+
 
 const onLogout = async () => {
   loading.value = true;
@@ -130,7 +135,6 @@ const onLogout = async () => {
       window.location.reload();
     }, 300);
     router.push('/');
-
   } catch (err: any) {
     errorMessage.value = err.message || "Ein Fehler beim Logout ist aufgetreten.";
     toast.add({
