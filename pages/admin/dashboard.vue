@@ -8,11 +8,12 @@ import {useStorage} from "@vueuse/core";
 const router = useRouter()
 
 const userToken = useStorage("auth_token", "");
+const userNameStorage = useStorage('auth_username', '');
 
 const orderStat = ref('');
 const userStat = ref('');
 const bookStat = ref('');
-const allOrders = ref('')
+const allOrders = ref([])
 
 const items = computed(() => [
   {
@@ -22,7 +23,6 @@ const items = computed(() => [
       router.push('/')
     }
   }]);
-
 
 onMounted(() => {
   getAllOrders();
@@ -82,7 +82,9 @@ async function getAllOrders () {
     if (!response.ok) {
       throw new Error('Fehler beim Abrufen der gesamten Orders');
     }
-    allOrders.value = await response.json();
+    const data = await response.json();
+    console.log('Response data:', data);
+    allOrders.value = data.orders;
   } catch (error) {
     console.error('Laden aller Orders fehlgeschlagen:', error);
   }
@@ -94,28 +96,43 @@ async function getAllOrders () {
   <Header />
   <MenuBar :model="items" class="text-gray-800" />
 
-  <h1> Willkommen auf dem Dashboard </h1>
+  <div class="max-w-6xl mx-auto my-4 p-2">
+  <h1> Willkommen auf dem Dashboard {{userNameStorage}} </h1>
+
   <p class="text-xl"> Hier sind die aktuellen Statistiken:</p>
-
-
-
-  {{allOrders}}
-
-  <div class="mt-4">
+  <div class="mt-4 pb-4">
     <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
       So viele Bestellungen sind bisher eingegangen:
       {{orderStat || 'Keine Bestellungen vorhanden' }}
     </p>
     <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
       So viele User haben sich bisher registriert:
-      {{userStat || 'Noch keien User vorhanden' }}
+      {{userStat || 'Noch kein User vorhanden' }}
     </p>
     <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
       So viele Bücher sind im Shop verfügbar:
       {{bookStat || 'Keine Bücher im Shop vorhanden' }}
     </p>
-
   </div>
+
+
+    <h2 class="text-xl font-bold mb-4 text-gray-600 dark:text-gray-100">Alle eingegangenen Bestellungen</h2>
+    <!-- PrimeVue-DataTable -->
+    <DataTable
+        :value="allOrders"
+        responsiveLayout="scroll"
+        :paginator="true"
+        :rows="10"
+    >
+      <Column field="orderID" header="Order ID" sortable />
+      <Column field="cartID" header="Cart ID" sortable />
+      <Column field="order_Date" header="Order Date" sortable />
+      <Column field="order_Status" header="Order Status" sortable />
+      <Column field="total_amount" header="Total Amount" sortable />
+    </DataTable>
+  </div>
+
+
 
 
 
