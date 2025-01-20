@@ -74,6 +74,8 @@
 
           </div>
         </div>
+        Folgende Bücher würden wir dir anhand deines Ausgewählten Buches empfehlen:
+        {{recommendations}}
       </div>
     </div>
 
@@ -103,6 +105,7 @@ const userEmail = userEmailStorage.value;
 const route = useRoute()
 const isbn = route.params.isbn
 const book = ref(null)
+const recommendations = ref (null)
 const list = ref(null)
 
 onMounted(async () => {
@@ -121,6 +124,8 @@ async function fetchBook() {
     console.error('Fehler:', error)
     book.value = null
   }
+  getRecommendations(isbn)
+  console.log(recommendations)
 }
 
 async function addToWishlist(isbn) {
@@ -173,8 +178,6 @@ async function addToWishlist(isbn) {
   }
 }
 
-
-
 async function addToCart(isbn) {
   const userEmail = userEmailStorage.value;
   const token = userTokenStorage.value;
@@ -201,6 +204,22 @@ async function addToCart(isbn) {
     // Falls du irgendeine Rückgabe verarbeiten willst:
   } catch (error) {
   console.log(error + response);
+  }
+}
+
+async function getRecommendations (isbn) {
+  try {
+    const response = await fetch (
+        `https://immense-bastion-48713-34053a42d791.herokuapp.com/recommend_books?isbn=${isbn}`
+    )
+    if (!response.ok) {
+      throw new Error('Fehler beim Laden der Empfehlungen')
+    }
+    const data = await response.json()
+    recommendations.value = data
+  } catch (error) {
+    console.error('Fehler:', error)
+    recommendations.value = null
   }
 }
 
