@@ -8,7 +8,7 @@ const searchQuery = ref('');
 
 async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
   try {
-    const pageNumber = currentPage + 1; // PrimeVue => 0-based, Backend => 1-based
+    const pageNumber = currentPage + 1;
     const url = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}&searchQuery=${searchQuery.value}`;
     const response = await fetch(url);
     if (!response.ok) {
@@ -24,23 +24,15 @@ async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
 
 
 function onPageChange(event: any) {
-
   page.value = event.page;
   rows.value = event.rows;
-
-  fetchBooks(page.value + 1, rows.value, selectedGenre.value);
+  fetchBooks(page.value, rows.value, selectedGenre.value);
 }
 
 onMounted(() => {
   const storedGenre = localStorage.getItem('selectedGenre');
-  if (storedGenre) {
-    selectedGenre.value = storedGenre;
-    fetchBooks(page.value, rows.value, storedGenre);
-  } else {
-    fetchBooks(page.value, rows.value, selectedGenre.value);
-  }
-  // Wir rufen page.value + 1 auf, wenn das Backend 1-basiert arbeitet.
-  fetchBooks(page.value + 1, rows.value, selectedGenre.value);
+  selectedGenre.value = storedGenre || '';
+  fetchBooks(page.value, rows.value, selectedGenre.value);
 });
 
 const selectedGenre = ref('');
@@ -57,7 +49,7 @@ const genres = ref([
 
 watch(selectedGenre, (newGenre) => {
   localStorage.setItem('selectedGenre', newGenre);
-  page.value = 0; // Optional: Zurück zur ersten Seite
+  page.value = 0;
   fetchBooks(page.value, rows.value, newGenre);
 });
 
