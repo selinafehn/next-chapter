@@ -2,7 +2,7 @@
   <Header />
   <navbanner />
   <!-- Hauptcontainer -->
-  <div class="max-w-4xl mx-auto my-8 p-4  ">
+  <div class="max-w-7xl mx-auto my-8 p-4  ">
     <div v-if="book" class="flex flex-col md:flex-row gap-6 ">
 
       <!-- Cover-Bild -->
@@ -74,16 +74,62 @@
 
           </div>
         </div>
-        <!----
-        Folgende Bücher würden wir dir anhand deines Ausgewählten Buches empfehlen:
-        {{recommendations}}
-        --->
       </div>
     </div>
 
     <!-- Fallback, falls kein Buch geladen werden konnte -->
     <div v-else>
       <p class="text-blue-600">Keine Daten gefunden.</p>
+    </div>
+    <div v-if="recommendations.length" class="mt-8">
+      <h2 class="text-xl font-bold mb-4">Folgende Bücher würden wir dir anhand deines Ausgewählten Buches empfehlen:</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div
+            v-for="(rec, index) in recommendations"
+            :key="rec.isbn"
+            class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-[#2E2D2D]"
+        >
+          <!-- Bild -->
+          <img
+              :src="rec.imageurll || '/default-img.png'"
+              :alt="rec.title"
+              class="h-60 w-auto object-cover rounded mb-4"
+          />
+
+          <!-- Titel -->
+          <div class="text-lg font-semibold text-gray-800 dark:text-gray-300">
+            {{ rec.title }}
+          </div>
+
+          <!-- Autor -->
+          <div class="text-sm text-gray-600 dark:text-gray-300">
+            von {{ rec.author }}
+          </div>
+
+          <!-- Genre -->
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            Genre: {{ rec.genre }}
+          </div>
+
+          <!-- Preis -->
+          <div class="text-md font-semibold text-gray-800 dark:text-gray-100 mt-2">
+            {{ rec.price }} €
+          </div>
+
+          <!-- Kurzer Beschreibungstext -->
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            {{ rec.shorttext }}
+          </p>
+
+          <NuxtLink
+              :to="`/book-detail/${rec.isbn}`"
+              class="inline-block mt-4 text-blue-500 hover:text-blue-700"
+          >
+            Mehr Details
+          </NuxtLink>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -102,16 +148,19 @@ const toast = useToast();
 
 const userEmailStorage = useStorage('auth_email', '');
 const userTokenStorage = useStorage('auth_token', '');
-
 const userEmail = userEmailStorage.value;
 const route = useRoute()
 const isbn = route.params.isbn
 const book = ref(null)
-//const recommendations = ref (null)
+const recommendations = ref ([])
 const list = ref(null)
 
 onMounted(async () => {
-  await fetchBook()
+  await fetchBook();
+  const isbn = route.params.isbn // oder wie du an die ISBN kommst
+  if (isbn) {
+    getRecommendations(String(isbn))
+  }
 })
 
 async function fetchBook() {
@@ -209,21 +258,21 @@ async function addToCart(isbn) {
   }
 }
 
-// async function getRecommendations (isbn) {
-//   try {
-//     const response = await fetch (
-//         `https://immense-bastion-48713-34053a42d791.herokuapp.com/recommend_books?isbn=${isbn}`
-//     )
-//     if (!response.ok) {
-//       throw new Error('Fehler beim Laden der Empfehlungen')
-//     }
-//     const data = await response.json()
-//     recommendations.value = data
-//   } catch (error) {
-//     console.error('Fehler:', error)
-//     recommendations.value = null
-//   }
-// }
+async function getRecommendations (isbn) {
+  try {
+    const response = await fetch (
+        `https://immense-bastion-48713-34053a42d791.herokuapp.com/recommend_books?isbn=${isbn}`
+    )
+    if (!response.ok) {
+      throw new Error('Fehler beim Laden der Empfehlungen')
+    }
+    const data = await response.json()
+    recommendations.value = data.recommendations
+  } catch (error) {
+    console.error('Fehler:', error)
+    recommendations.value = null
+  }
+}
 
 </script>
 
