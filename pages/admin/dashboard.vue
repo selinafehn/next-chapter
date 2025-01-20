@@ -22,6 +22,18 @@ const items = computed(() => [
     command: () => {
       router.push('/')
     }
+  },{
+    label: 'Dashboard',
+    icon: 'pi pi-home',
+    command: () => {
+      router.push('/admin/dashboard')
+    }
+  },{
+    label: 'Bücher',
+    icon: 'pi pi-book',
+    command: () => {
+      router.push('/admin/books')
+    }
   }]);
 
 onMounted(() => {
