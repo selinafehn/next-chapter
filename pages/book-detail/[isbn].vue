@@ -70,7 +70,13 @@
             <Toast />
             <Button class="dark:text-gray-100" @click="addToWishlist(isbn)">Zur Wishlist hinzufügen</Button>
             <p></p>
-            <Button class="dark:text-gray-100" @click="addToCart(book.isbn)">Zum Warenkorb hinzufügen</Button>
+            <Button
+                class="dark:text-gray-100"
+                :disabled="book && book.quantity <= 0"
+                @click="addToCart(book.isbn)"
+            >
+              Zum Warenkorb hinzufügen
+            </Button>
 
           </div>
         </div>

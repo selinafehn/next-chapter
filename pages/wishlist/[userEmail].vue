@@ -117,6 +117,7 @@ async function deleteOneBookFromWishlist(isbn) {
         <Button
             icon="pi pi-shopping-cart"
             class="p-button-rounded p-button-warning ml-4"
+            :disabled="book && book.quantity <= 0"
             @click="addToCart(book.isbn)"
             tooltip="Zum Warenkorb hinzufügen"
             tooltip-options="{position: 'top'}"
