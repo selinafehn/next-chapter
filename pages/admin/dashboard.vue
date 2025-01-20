@@ -9,7 +9,6 @@ const router = useRouter()
 
 const userToken = useStorage("auth_token", "");
 
-
 const orderStat = ref('');
 const userStat = ref('');
 const bookStat = ref('');
@@ -24,12 +23,6 @@ const items = computed(() => [
     }
   }]);
 
-
-onMounted(() => {
-  ProductService.getProductsMini().then((data) => (products.value = data));
-});
-
-const products = ref();
 
 onMounted(() => {
   getAllOrders();
@@ -104,14 +97,7 @@ async function getAllOrders () {
   <h1> Willkommen auf dem Dashboard </h1>
   <p class="text-xl"> Hier sind die aktuellen Statistiken:</p>
 
-  div class="card">
-  <DataTable :value="products" tableStyle="min-width: 50rem">
-    <Column field="code" header="Code"></Column>
-    <Column field="name" header="Name"></Column>
-    <Column field="category" header="Category"></Column>
-    <Column field="quantity" header="Quantity"></Column>
-  </DataTable>
-  </div>
+
 
   {{allOrders}}
 
