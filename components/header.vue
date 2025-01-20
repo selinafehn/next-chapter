@@ -7,23 +7,20 @@ const userEmailStorage = useStorage('auth_email', '');
 const userEmail = userEmailStorage.value;
 
 // Zustand für die Adminrolle
-const isAdmin = ref(false);
+const isAdmin = ref();
 
 // Funktion, um die Adminrolle zu prüfen
 const checkAdminRole = async () => {
   try {
-    console.log('Prüfe Adminrolle für:', userEmail);
     const response = await fetch(
         `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/role/admin/get?email=${userEmail}`
     );
-
-    if (!response.ok) throw new Error('Fehler beim Abrufen der Rolle');
-
+    if (!response.ok) {
+      throw new Error('Fehler beim Abrufen der Rolle');
+    }
     isAdmin.value = await response.json(); // true oder false von der API
-    console.log('isAdmin:', isAdmin.value);
   } catch (error) {
     console.error('Rollenprüfung fehlgeschlagen:', error);
-    isAdmin.value = false; // Standard: Nicht-Admin
   }
 };
 
@@ -51,7 +48,7 @@ onMounted(() => {
       </div>
 
   <Button
-      v-if="userRole === 'admin'"
+      v-if="isAdmin"
       @click="$router.push('/admin/dashboard')"
       class="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600"
   >

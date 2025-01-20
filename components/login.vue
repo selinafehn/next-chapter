@@ -53,7 +53,7 @@ const toggleForm = () => {
 // Computed-Eigenschaft: true, wenn ein Token vorhanden ist
 const isLoggedIn = computed(() => !!userToken.value);
 
-// Login-Logik
+
 // Login-Logik
 const onLogin = async () => {
   loading.value = true;
@@ -95,7 +95,10 @@ const onLogin = async () => {
       detail: 'Login erfolgreich!',
       life: 3000
     });
-
+    setTimeout(() => {
+      window.location.reload();
+    }, 300);
+    router.push('/');
   } catch (err: any) {
     errorMessage.value = err.message || "Ein unerwarteter Fehler ist aufgetreten.";
     toast.add({
