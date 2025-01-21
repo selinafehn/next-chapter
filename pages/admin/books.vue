@@ -101,7 +101,7 @@ async function addOneBook () {
   <Header />
   <MenuBar :model="items" class="text-gray-800" />
 
-
+<Panel class="flex flex-col items-center p-4 text-xl">
   <div class="card">
     <h2>Neues Buch anlegen</h2>
 
@@ -110,61 +110,61 @@ async function addOneBook () {
     <form class="p-fluid grid" @submit.prevent="addOneBook">
 
       <!-- ISBN -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="isbn">ISBN</label>
         <InputText id="isbn" v-model="isbn" placeholder="1234567890" />
       </div>
 
       <!-- Titel -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="title">Titel</label>
         <InputText id="title" v-model="title" placeholder="Buchtitel" />
       </div>
 
       <!-- Autor -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="author">Autor</label>
         <InputText id="author" v-model="author" placeholder="Autor" />
       </div>
 
       <!-- Erscheinungsjahr -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="publication">Erscheinungsjahr</label>
         <InputText id="publication" v-model="publication" placeholder="2023" />
       </div>
 
       <!-- Verlag -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="publisher">Verlag</label>
         <InputText id="publisher" v-model="publisher" placeholder="Verlag XYZ" />
       </div>
 
       <!-- Preis -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="price">Preis</label>
         <InputText id="price" v-model="price" placeholder="19.99" />
       </div>
 
       <!-- Menge -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="quantity">Menge</label>
         <InputText id="quantity" v-model="quantity" placeholder="5" />
       </div>
 
       <!-- Bild-URL -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="imageUrl">Bild-URL</label>
         <InputText id="imageUrl" v-model="imageUrl" placeholder="http://..." />
       </div>
 
       <!-- Genre -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="genre">Genre</label>
         <InputText id="genre" v-model="genre" placeholder="Romance" />
       </div>
 
       <!-- shorttext -->
-      <div class="field col-12">
+      <div class="field col-12 mb-2">
         <label for="shorttext">Shorttext</label>
         <InputText id="shorttext" v-model="shorttext" placeholder="Lorem Ipsum ..." />
       </div>
@@ -179,6 +179,7 @@ async function addOneBook () {
       </div>
     </form>
   </div>
+</Panel>
 </template>
 
 <style scoped>
