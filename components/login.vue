@@ -185,8 +185,69 @@ const onRegister = async () => {
   } finally {
     loading.value = false;
   }
-
 };
+
+const changeData = reactive({
+  email: email,
+  username: "",
+  firstName: "",
+  lastName: "",
+  password: "",
+  street: "",
+  city: "",
+  postalCode: "",
+  country: "",
+});
+
+async function changeUserData() {
+
+  const filteredData = {
+    ...Object.fromEntries(
+        Object.entries(changeData).filter(([key, value]) => value !== "")
+    ),
+    email: userEmailStorage.value, // E-Mail hinzufügen
+  };
+
+  try {
+    const response = await fetch(
+        "https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/update",
+        {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(filteredData),
+        }
+    );
+    if (!response.ok) throw new Error("Änderungen fehlgeschlagen");
+    success.value = true;
+    toast.add({
+      severity: 'success',
+      summary: 'Erfolg',
+      detail: 'Erfolreich geändert!',
+      life: 3000 // 3 Sekunden sichtbar
+    });
+    if (filteredData.username) {
+      localStorage.setItem("auth_username", filteredData.username);
+    }
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 300);
+  } catch (err: any) {
+    error.value = true;
+    errorMessage.value = err.message || "";
+    toast.add({
+      severity: 'error',
+      summary: 'Fehler',
+      detail: 'Ein Fehler ist beim ändern der Daten aufgetreten!',
+      life: 3000 // 3 Sekunden sichtbar
+    });
+  } finally {
+    loading.value = false;
+  }
+
+
+}
+
 </script>
 
 <template>
@@ -320,9 +381,53 @@ const onRegister = async () => {
     <!-- Falls eingeloggt: Einfach nur Logout-Button anzeigen -->
     <div v-else>
       <div class = "mb-4">
-        Willkommen {{ userNameStorage }}! Bearbeite hier deine Userdaten oder Logge dich aus
+        <div class="p-3 mb-4 text-l">
+        Willkommen {{ userNameStorage }}! <br>
+        Bearbeite hier Userdaten falls gewünscht (trage nur das ein, was du ändern willst)
+        </div>
+
+        <div class="m-2">
+          <form @submit.prevent="onRegister" class="w-full max-w-md">
+          <div class="mb-3">
+            <label for="username" class="block text-sm font-medium mb-1"></label>
+            <InputText id="username" required v-model="changeData.username" placeholder="Username" class="w-full"/>
+          </div>
+            <div class="mb-3">
+              <label for="password" class="block text-sm font-medium mb-1"></label>
+              <Password
+                  id="password"
+                  v-model="changeData.password"
+                  placeholder="Passwort"
+                  toggleMask
+                  required
+                  :feedback="false"
+                  class="w-full"
+                  inputClass="w-full py-2 px-3 border focus:border-gray-700"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="street" class="block text-sm font-medium mb-1"></label>
+              <InputText id="street" required v-model="changeData.street" placeholder="Straße" class="w-full"/>
+            </div>
+            <div class="mb-3">
+              <label for="postalCode" class="block text-sm font-medium mb-1"></label>
+              <InputText id="postalCode" required v-model="changeData.postalCode" placeholder="Postleitzahl" class="w-full"/>
+            </div>
+            <div class="mb-3">
+              <label for="city" class="block text-sm font-medium mb-1"></label>
+              <InputText id="city" required v-model="changeData.city" placeholder="Stadt" class="w-full"/>
+            </div>
+            <div class="mb-3">
+              <label for="country" class="block text-sm font-medium mb-1"></label>
+              <InputText id="country" required v-model="changeData.country" placeholder="Land" class="w-full"/>
+            </div>
+            <Button type="submit" label="Daten ändern" :loading="loading" @click="changeUserData" class="w-full bg-warmGray hover:bg-green-700 text-black py-2 rounded"/>
+          </form>
+        </div>
       </div>
-      <Button label="Ausloggen" class="bg-[#15191ee4] rounded" :loading="loading" @click="onLogout"/>
+      <p class="mt-6 text-l"> oder logge dich hier aus:</p>
+      <Button label="Ausloggen" class="bg-[#15191ee4] dark:bg-warmGray rounded" :loading="loading" @click="onLogout"/>
     </div>
+
   </div>
 </template>
