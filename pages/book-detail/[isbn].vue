@@ -181,8 +181,10 @@ async function fetchBook() {
     console.error('Fehler:', error)
     book.value = null
   }
-  getRecommendations(isbn)
-  console.log(recommendations)
+
+    getRecommendations(isbn)
+    console.log(recommendations)
+
 }
 
 async function addToWishlist(isbn) {
@@ -264,21 +266,25 @@ async function addToCart(isbn) {
   }
 }
 
-async function getRecommendations (isbn) {
+async function getRecommendations(isbn) {
   try {
-    const response = await fetch (
+    const response = await fetch(
         `https://immense-bastion-48713-34053a42d791.herokuapp.com/recommend_books?isbn=${isbn}`
-    )
+    );
     if (!response.ok) {
-      throw new Error('Fehler beim Laden der Empfehlungen')
+      throw new Error('Fehler beim Laden der Empfehlungen');
     }
-    const data = await response.json()
-    recommendations.value = data.recommendations
+    const data = await response.json();
+
+    // Wenn der Server kein "recommendations" liefert, nutze ein leeres Array als Fallback:
+    recommendations.value = data.recommendations || [];
   } catch (error) {
-    console.error('Fehler:', error)
-    recommendations.value = null
+    console.error('Fehler:', error);
+    // Anstelle von "null" => setze ein leeres Array:
+    recommendations.value = [];
   }
 }
+
 
 </script>
 
