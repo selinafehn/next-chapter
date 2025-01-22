@@ -96,7 +96,7 @@ async function getAllOrders () {
     }
     const data = await response.json();
     console.log('Response data:', data);
-    allOrders.value = data.orders;
+    allOrders.value = data;
   } catch (error) {
     console.error('Laden aller Orders fehlgeschlagen:', error);
   }
@@ -136,12 +136,14 @@ async function getAllOrders () {
         :paginator="true"
         :rows="10"
     >
-      <Column field="orderID" header="Order ID" sortable />
-      <Column field="cartID" header="Cart ID" sortable />
-      <Column field="order_Date" header="Order Date" sortable />
-      <Column field="order_Status" header="Order Status" sortable />
-      <Column field="total_amount" header="Total Amount" sortable />
+      <Column field="orderid" header="Order ID" />
+      <Column field="useremail" header="User Email" />
+      <Column field="orderDate" header="Order Date" />
+      <Column field="orderStatus" header="Order Status" />
+      <Column field="totalAmount" header="Total Amount" sortable />
+      <Column field="isbnList" header="Alle bestellten Bücher" />
     </DataTable>
+
   </div>
 
 
