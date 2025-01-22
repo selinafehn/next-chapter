@@ -15,35 +15,37 @@ const items = computed(() => [
 <template>
   <MenuBar :model="items" class="text-gray-800" />
 
-    <div class="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
-      <h1 class="text-2xl font-bold text-gray-800 mb-4">Impressum</h1>
+  <div class="p-6 shadow-md rounded-md">
+    <h1 class="text-2xl font-bold  mb-4">Impressum</h1>
 
-      <div class="mb-6">
+    <Accordion>
+      <!-- 1. Firmenangaben -->
+      <AccordionTab header="nextChapter UG (haftungsbeschränkt)">
         <p class="text-lg font-semibold text-gray-700">nextChapter UG (haftungsbeschränkt)</p>
         <p class="text-gray-700">Vertreten durch den Geschäftsführer:</p>
         <p class="font-semibold text-gray-700">Oliver Bechthold</p>
-      </div>
+      </AccordionTab>
 
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Adresse</h2>
+      <!-- 2. Adresse -->
+      <AccordionTab header="Adresse">
         <p class="text-gray-700">
           Lohrtalweg 10<br />
           74821 Mosbach<br />
           Deutschland
         </p>
-      </div>
+      </AccordionTab>
 
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Registerinformationen</h2>
+      <!-- 3. Registerinformationen -->
+      <AccordionTab header="Registerinformationen">
         <p class="text-gray-700">
           <strong>Registergericht:</strong> Amtsgericht Mosbach <br />
           <strong>Registernummer:</strong> HRB 123456 <br />
           <strong>USt-IdNr. gemäß § 27a UStG:</strong> DE123456789
         </p>
-      </div>
+      </AccordionTab>
 
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Kontakt</h2>
+      <!-- 4. Kontakt -->
+      <AccordionTab header="Kontakt">
         <p class="text-gray-700">
           📞 <strong>Telefon:</strong> +49 160 12345678 <br />
           📧 <strong>E-Mail:</strong>
@@ -51,19 +53,19 @@ const items = computed(() => [
             support@nextChapter.de
           </NuxtLink>
         </p>
-      </div>
+      </AccordionTab>
 
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Redaktionell Verantwortlicher</h2>
+      <!-- 5. Redaktionell Verantwortlicher -->
+      <AccordionTab header="Redaktionell Verantwortlicher">
         <p class="text-gray-700">
           <strong>Oliver Bechthold</strong><br />
           Lohrtalweg 10<br />
           74821 Mosbach
         </p>
-      </div>
+      </AccordionTab>
 
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Datenschutzbeauftragter</h2>
+      <!-- 6. Datenschutzbeauftragter -->
+      <AccordionTab header="Datenschutzbeauftragter">
         <p class="text-gray-700">
           <strong>Oliver Bechthold</strong><br />
           Lohrtalweg 10<br />
@@ -73,33 +75,34 @@ const items = computed(() => [
             datenschutz@nextChapter.de
           </NuxtLink>
         </p>
-      </div>
+      </AccordionTab>
 
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Datenschutzerklärung</h2>
+      <!-- 7. Datenschutzerklärung -->
+      <AccordionTab header="Datenschutzerklärung">
         <p class="text-gray-700">
           Weitere Informationen zum Datenschutz finden Sie in unserer
           <NuxtLink to="/datenschutz" class="text-blue-500 hover:underline">
             Datenschutzerklärung
           </NuxtLink>.
         </p>
-      </div>
+      </AccordionTab>
 
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Online-Streitbeilegung</h2>
+      <!-- 8. Online-Streitbeilegung -->
+      <AccordionTab header="Online-Streitbeilegung">
         <p class="text-gray-700">
           Plattform der EU-Kommission zur Online-Streitbeilegung:
           <NuxtLink to="https://ec.europa.eu/odr" class="text-blue-500 hover:underline">
             https://ec.europa.eu/odr
           </NuxtLink>
         </p>
-      </div>
+      </AccordionTab>
+    </Accordion>
 
-      <div class="border-t pt-4 mt-6 text-sm text-gray-600">
-        Wir sind weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
-      </div>
+    <div class="border-t pt-4 mt-6 text-sm text-gray-600">
+      Wir sind weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer
+      Verbraucherschlichtungsstelle teilzunehmen.
     </div>
-
+  </div>
 </template>
 
 <style scoped>
