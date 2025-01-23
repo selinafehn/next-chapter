@@ -68,7 +68,7 @@
               }}
             </p>
             <Toast />
-            <Button class="dark:text-gray-100" @click="addToWishlist(isbn)">Zur Wishlist hinzufügen</Button>
+            <Button class="dark:text-gray-100" @click="addToWishlist(isbn)">Zur Wunschliste hinzufügen</Button>
             <p></p>
             <Button
                 class="dark:text-gray-100"
@@ -215,14 +215,14 @@ async function addToWishlist(isbn) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || 'Fehler beim Hinzufügen zur Wishlist');
+      throw new Error(errorData.message || 'Fehler beim Hinzufügen zur Wunschliste');
     }
 
     // Erfolgsmeldung anzeigen
     toast.add({
       severity: 'success',
       summary: 'Erfolgreich',
-      detail: 'Buch wurde der Wishlist hinzugefügt',
+      detail: 'Buch wurde der Wunschliste hinzugefügt',
       life: 3000
     });
 
@@ -231,7 +231,7 @@ async function addToWishlist(isbn) {
     toast.add({
       severity: 'error',
       summary: 'Fehler',
-      detail: error.message || 'Buch konnte nicht der Wishlist hinzugefügt werden',
+      detail: error.message || 'Buch konnte nicht der Wunschliste hinzugefügt werden',
       life: 3000
     });
   }

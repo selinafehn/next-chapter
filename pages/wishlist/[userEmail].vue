@@ -23,7 +23,7 @@ async function fetchList () {
   try {
     const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlist?userEmail=${userEmail}`)
     if (!response.ok) {
-      throw new Error('Fehler beim Laden der Wishlist')
+      throw new Error('Fehler beim Laden der Wunschliste')
     }
     const data = await response.json()
     list.value = data
@@ -41,7 +41,7 @@ async function addToCart(isbn) {
           headers: { 'Content-Type': 'application/json' },
         })
     if (!response.ok) {
-      throw new Error('Fehler beim Hinzufügen zur Wishlist')
+      throw new Error('Fehler beim Hinzufügen zur Wunschliste')
     }
     list.value.books = list.value.books.filter(book => book.isbn !== isbn)
 
@@ -60,14 +60,14 @@ async function deleteOneBookFromWishlist(isbn) {
     })
 
     if (!response.ok) {
-      throw new Error('Fehler beim Entfernen des Buches aus der Wishlist')
+      throw new Error('Fehler beim Entfernen des Buches aus der Wunschliste')
     }
 
     // Buch lokal aus der Liste entfernen (kein Reload notwendig)
     list.value.books = list.value.books.filter(book => book.isbn !== isbn)
 
     // Erfolgsmeldung anzeigen
-    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch aus der Wishlist entfernt', life: 3000 })
+    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch aus der Wunschliste entfernt', life: 3000 })
   } catch (error) {
     console.error('Fehler:', error)
     // Fehlerbenachrichtigung anzeigen
@@ -84,7 +84,7 @@ async function deleteOneBookFromWishlist(isbn) {
   <Toast />
   <div class="container mx-auto p-4">
     <!-- Header -->
-    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist deine Wishlist, {{ userName }}</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">Hier ist deine Wunschliste, {{ userName }}</h1>
 
     <!-- Wenn list.books existiert und nicht leer ist -->
     <div v-if="list?.books && list.books.length > 0" class="space-y-4">
@@ -111,7 +111,7 @@ async function deleteOneBookFromWishlist(isbn) {
             icon="pi pi-trash"
             class="p-button-rounded p-button-danger ml-4"
             @click="deleteOneBookFromWishlist(book.isbn)"
-            tooltip="Aus Wishlist entfernen"
+            tooltip="Aus Wunschliste entfernen"
             tooltip-options="{position: 'top'}"
         />
         <Button
@@ -126,7 +126,7 @@ async function deleteOneBookFromWishlist(isbn) {
     </div>
     <!-- Wenn das books-Array leer ist oder gar nichts da ist -->
     <div v-else class="text-center text-gray-500">
-      <p>Keine Bücher in der Wishlist vorhanden.</p>
+      <p>Keine Bücher in der Wunschliste vorhanden.</p>
     </div>
   </div>
 
