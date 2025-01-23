@@ -12,9 +12,7 @@ const isAdmin = ref();
 // Funktion, um die Adminrolle zu prüfen
 const checkAdminRole = async () => {
   try {
-    const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/role/admin/get?email=${userEmail}`
-    );
+    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/role/admin/get?email=${userEmail}`);
     if (!response.ok) {
       throw new Error('Fehler beim Abrufen der Rolle');
     }
@@ -34,26 +32,11 @@ onMounted(() => {
 
 <template>
   <div class="flex items-center gap-4 p-4 shadow-md rounded-md">
-    <!-- Logo -->
-    <img
-        src="../images/Logo.jpeg"
-        alt="Logo Nextchapter"
-        class="h-20 w-20 rounded-md"
-    />
-
-    <!-- Dropdown und Suchleiste -->
+    <img src="../images/Logo.jpeg" alt="Logo Nextchapter" class="h-20 w-20 rounded-md"/>
     <div class="flex items-center gap-2 w-full">
-      <!-- Darkmode -->
-        <Darkmode/>
-      </div>
-
-  <Button
-      v-if="isAdmin"
-      @click="$router.push('/admin/dashboard')"
-      class="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600"
-  >
-    Admin Dashboard
-  </Button>
+      <Darkmode/>
+    </div>
+    <Button v-if="isAdmin" @click="$router.push('/admin/dashboard')" class="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600">Admin Dashboard</Button>
   </div>
 </template>
 

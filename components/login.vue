@@ -4,6 +4,7 @@
   <div class="flex flex-col items-center p-4">
     <!-- Wenn NICHT eingeloggt => Login / Registrierung -->
     <div v-if="!isLoggedIn">
+
       <!-- LOGIN -->
       <div v-if="showLogin">
         <div class="flex flex-col items-center p-4">
@@ -11,55 +12,20 @@
           <form @submit.prevent="onLogin" class="w-full max-w-sm">
             <!-- E-Mail -->
             <div class="mb-4">
-              <label for="email" class="block text-sm font-medium mb-1"
-              >E-Mail Adresse</label
-              >
-              <InputText
-                  id="email"
-                  v-model="email"
-                  type="email"
-                  required
-                  placeholder="E-Mail Adresse"
-                  class="w-full pl-3 py-2 rounded border border-gray-300 focus:border-gray-700"
-              />
-              <p class="text-xs text-gray-500 mt-1">
-                Wir werden Ihre E-Mail niemals an Dritte weitergeben.
-              </p>
+              <label for="email" class="block text-sm font-medium mb-1">E-Mail Adresse</label>
+              <InputText id="email" v-model="email" type="email" required placeholder="E-Mail Adresse" class="w-full pl-3 py-2 rounded border border-gray-300 focus:border-gray-700"/>
+              <p class="text-xs text-gray-500 mt-1">Wir werden Ihre E-Mail niemals an Dritte weitergeben.</p>
             </div>
-
             <!-- Passwort -->
             <div class="mb-6">
-              <label for="password" class="block text-sm font-medium mb-1"
-              >Passwort</label
-              >
-              <Password
-                  id="password"
-                  v-model="password"
-                  placeholder="Passwort"
-                  toggleMask
-                  required
-                  :feedback="false"
-                  class="w-full"
-                  inputClass="w-full py-2 px-3 border border-gray-300 rounded focus:border-gray-700"
-              />
+              <label for="password" class="block text-sm font-medium mb-1">Passwort</label>
+              <Password id="password" v-model="password" placeholder="Passwort" toggleMask required :feedback="false" class="w-full" inputClass="w-full py-2 px-3 border border-gray-300 rounded focus:border-gray-700"/>
             </div>
-
             <!-- Button: Login -->
-            <Button
-                label="Anmelden"
-                :loading="loading"
-                class="w-full bg-gray-700 hover:bg-gray-800 text-white py-2 rounded"
-                type="submit"
-            />
+            <Button label="Anmelden" :loading="loading" class="w-full bg-gray-700 hover:bg-gray-800 text-white py-2 rounded" type="submit"/>
           </form>
-
           <p class="mt-4">
-            <Button
-                class="text-blue-500 hover:underline"
-                @click="toggleForm"
-            >
-              Noch kein Konto?
-            </Button>
+            <Button class="text-blue-500 hover:underline" @click="toggleForm">Noch kein Konto?</Button>
           </p>
         </div>
       </div>
@@ -73,146 +39,53 @@
           <form @submit.prevent="onRegister" class="w-full max-w-md">
             <!-- E-Mail -->
             <div class="mb-3">
-              <label for="email" class="block text-sm font-medium mb-1"
-              >E-Mail *</label
-              >
-              <InputText
-                  id="email"
-                  required
-                  v-model="formData.email"
-                  placeholder="E-Mail Adresse"
-                  class="w-full"
-              />
+              <label for="email" class="block text-sm font-medium mb-1">E-Mail *</label>
+              <InputText id="email" required v-model="formData.email" placeholder="E-Mail Adresse" class="w-full"/>
             </div>
-
             <!-- Benutzername -->
             <div class="mb-3">
-              <label for="username" class="block text-sm font-medium mb-1"
-              >Benutzername *</label
-              >
-              <InputText
-                  id="username"
-                  required
-                  v-model="formData.username"
-                  placeholder="Benutzername"
-                  class="w-full"
-              />
+              <label for="username" class="block text-sm font-medium mb-1">Benutzername *</label>
+              <InputText id="username" required v-model="formData.username" placeholder="Benutzername" class="w-full"/>
             </div>
-
             <!-- Vorname -->
             <div class="mb-3">
-              <label for="firstName" class="block text-sm font-medium mb-1"
-              >Vorname *</label
-              >
-              <InputText
-                  id="firstName"
-                  required
-                  v-model="formData.firstName"
-                  placeholder="Vorname"
-                  class="w-full"
-              />
+              <label for="firstName" class="block text-sm font-medium mb-1">Vorname *</label>
+              <InputText id="firstName" required v-model="formData.firstName" placeholder="Vorname" class="w-full"/>
             </div>
-
             <!-- Nachname -->
             <div class="mb-3">
-              <label for="lastName" class="block text-sm font-medium mb-1"
-              >Nachname *</label
-              >
-              <InputText
-                  id="lastName"
-                  required
-                  v-model="formData.lastName"
-                  placeholder="Nachname"
-                  class="w-full"
-              />
+              <label for="lastName" class="block text-sm font-medium mb-1">Nachname *</label>
+              <InputText id="lastName" required v-model="formData.lastName" placeholder="Nachname" class="w-full"/>
             </div>
-
             <!-- Passwort -->
             <div class="mb-3">
-              <label for="password" class="block text-sm font-medium mb-1"
-              >Passwort *</label
-              >
-              <Password
-                  id="password"
-                  required
-                  v-model="formData.password"
-                  placeholder="Passwort"
-                  toggleMask
-                  class="w-full"
-              />
+              <label for="password" class="block text-sm font-medium mb-1">Passwort *</label>
+              <Password id="password" required v-model="formData.password" placeholder="Passwort" toggleMask class="w-full"/>
             </div>
-
             <!-- Straße -->
             <div class="mb-3">
-              <label for="street" class="block text-sm font-medium mb-1"
-              >Straße *</label
-              >
-              <InputText
-                  id="street"
-                  required
-                  v-model="formData.street"
-                  placeholder="Straße"
-                  class="w-full"
-              />
+              <label for="street" class="block text-sm font-medium mb-1">Straße *</label>
+              <InputText id="street" required v-model="formData.street" placeholder="Straße" class="w-full"/>
             </div>
-
             <!-- Stadt -->
             <div class="mb-3">
-              <label for="city" class="block text-sm font-medium mb-1"
-              >Stadt *</label
-              >
-              <InputText
-                  id="city"
-                  required
-                  v-model="formData.city"
-                  placeholder="Stadt"
-                  class="w-full"
-              />
+              <label for="city" class="block text-sm font-medium mb-1">Stadt *</label>
+              <InputText id="city" required v-model="formData.city" placeholder="Stadt" class="w-full"/>
             </div>
-
             <!-- Postleitzahl -->
             <div class="mb-3">
-              <label for="postalCode" class="block text-sm font-medium mb-1"
-              >Postleitzahl *</label
-              >
-              <InputText
-                  id="postalCode"
-                  required
-                  v-model="formData.postalCode"
-                  placeholder="Postleitzahl"
-                  class="w-full"
-              />
+              <label for="postalCode" class="block text-sm font-medium mb-1">Postleitzahl *</label>
+              <InputText id="postalCode" required v-model="formData.postalCode" placeholder="Postleitzahl" class="w-full"/>
             </div>
-
             <!-- Land -->
             <div class="mb-3">
-              <label for="country" class="block text-sm font-medium mb-1"
-              >Land *</label
-              >
-              <InputText
-                  id="country"
-                  required
-                  v-model="formData.country"
-                  placeholder="Land"
-                  class="w-full"
-              />
+              <label for="country" class="block text-sm font-medium mb-1">Land *</label>
+              <InputText id="country" required v-model="formData.country" placeholder="Land" class="w-full"/>
             </div>
-
-            <Button
-                type="submit"
-                label="Registrieren"
-                :loading="loading"
-                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
-            />
+            <Button type="submit" label="Registrieren" :loading="loading" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"/>
           </form>
-
           <p class="mt-4">
-            <Button
-                class="text-blue-500 hover:underline"
-                @click="toggleForm"
-            >
-              Zurück zum Login
-            </Button>
+            <Button class="text-blue-500 hover:underline" @click="toggleForm">Zurück zum Login</Button>
           </p>
         </div>
       </div>
@@ -222,10 +95,8 @@
     <div v-else>
       <div class="mb-4">
         <div class="p-3 mb-4 text-l">
-          Willkommen {{ userNameStorage }}! <br />
-          Bearbeite hier deine Userdaten (und klicke auf "Änderungen speichern"):
+          Willkommen {{ userNameStorage }}! <br />Bearbeite hier deine Userdaten (und klicke auf "Änderungen speichern"):
         </div>
-
         <!-- Formular für User-Daten -->
         <div class="m-2">
           <form @submit.prevent="saveChanges" class="max-w-md p-2 border border-gray-300 rounded">
@@ -234,69 +105,43 @@
               <label class="block text-sm font-medium mb-1">E-Mail</label>
               <InputText v-model="userForm.email" disabled class="w-full" />
             </div>
-
             <!-- Benutzername -->
             <div class="mb-3">
               <label class="block text-sm font-medium mb-1">Benutzername</label>
               <InputText v-model="userForm.username" class="w-full" />
             </div>
-
             <!-- Straße -->
             <div class="mb-3">
               <label class="block text-sm font-medium mb-1">Straße</label>
               <InputText v-model="userForm.street" class="w-full" />
             </div>
-
             <!-- Postleitzahl -->
             <div class="mb-3">
               <label class="block text-sm font-medium mb-1">Postleitzahl</label>
               <InputText v-model="userForm.postalCode" class="w-full" />
             </div>
-
             <!-- Stadt -->
             <div class="mb-3">
               <label class="block text-sm font-medium mb-1">Stadt</label>
               <InputText v-model="userForm.city" class="w-full" />
             </div>
-
             <!-- Land -->
             <div class="mb-3">
               <label class="block text-sm font-medium mb-1">Land</label>
               <InputText v-model="userForm.country" class="w-full" />
             </div>
-
             <!-- Button: Speichern -->
-            <Button
-                type="submit"
-                label="Änderungen speichern"
-                :loading="loading"
-                class="mt-2 bg-blue-600 hover:bg-blue-700 text-white"
-            />
+            <Button type="submit" label="Änderungen speichern" :loading="loading" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white"/>
           </form>
         </div>
       </div>
 
       <p class="mt-6 text-l">Oder logge dich hier aus:</p>
-      <Button
-          label="Ausloggen"
-          class="bg-[#15191ee4] dark:bg-warmGray rounded"
-          :loading="loading"
-          @click="onLogout"
-      />
+      <Button label="Ausloggen" class="bg-[#15191ee4] dark:bg-warmGray rounded" :loading="loading" @click="onLogout"/>
       <p class="mt-6 text-l">Konto löschen?</p>
-      <Button
-          label="Konto löschen"
-          class="bg-red dark:bg-red rounded"
-          :loading="loading"
-          @click="onDeleteClick"
-      />
+      <Button label="Konto löschen" class="bg-red dark:bg-red rounded" :loading="loading" @click="onDeleteClick"/>
       <!-- HIER kommt der Dialog rein -->
-      <Dialog
-          v-model:visible="showDeleteDialog"
-          header="Konto löschen"
-          modal
-          style="width: 30vw"
-      >
+      <Dialog v-model:visible="showDeleteDialog" header="Konto löschen" modal style="width: 30vw">
         <div class="p-2">
           <p class="mb-3">
             Möchtest du deinen Account wirklich <strong>endgültig</strong> löschen?
@@ -304,28 +149,11 @@
           <p class="mb-4 text-sm">
             Bitte gib dein Passwort ein, um den Löschvorgang zu bestätigen:
           </p>
-
           <!-- Passwort-Eingabe -->
-          <Password
-              v-model="deletePassword"
-              placeholder="Passwort"
-              toggleMask
-              :feedback="false"
-              class="w-full"
-          />
-
+          <Password v-model="deletePassword" placeholder="Passwort" toggleMask :feedback="false" class="w-full"/>
           <div class="flex justify-end gap-2 mt-4">
-            <Button
-                label="Abbrechen"
-                class="p-button-text"
-                @click="showDeleteDialog = false"
-            />
-            <Button
-                label="Löschen"
-                class="p-button-danger"
-                :loading="loading"
-                @click="confirmDeleteAccount"
-            />
+            <Button label="Abbrechen" class="p-button-text" @click="showDeleteDialog = false"/>
+            <Button label="Löschen" class="p-button-danger" :loading="loading" @click="confirmDeleteAccount"/>
           </div>
         </div>
       </Dialog>

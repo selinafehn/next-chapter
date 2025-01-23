@@ -44,7 +44,7 @@ async function deleteOneBookFromCart(isbn) {
     cart.value.books = cart.value.books.filter(book => book.isbn !== isbn)
 
     // Erfolgsmeldung anzeigen
-    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch aus der Wishlist entfernt', life: 3000 })
+    toast.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Buch aus der Wunschliste entfernt', life: 3000 })
   } catch (error) {
     console.error('Fehler:', error)
     // Fehlerbenachrichtigung anzeigen
@@ -109,9 +109,9 @@ async function checkoutBooks(){
             icon="pi pi-trash"
             class="p-button-rounded p-button-danger ml-4"
             @click="deleteOneBookFromCart(book.isbn)"
-            tooltip="Aus Wishlist entfernen"
+            tooltip="Aus Wunschliste entfernen"
             tooltip-options="{position: 'top'}"
-        />
+        ></Button>
       </div>
       <h2 class="text-xl font-semibold"> Gesamter Preis: {{ cart.total_amount }} €</h2>
       <Button @click="checkoutBooks()" > Hier bestellen </Button>

@@ -57,19 +57,12 @@ const items = computed(() => [
 <template>
   <!-- Menüleiste -->
   <MenuBar :model="items" class="text-gray-800" />
-
   <!-- Dialog Profil -->
-  <Dialog
-      v-model:visible="visibleProfile"
-      modal
-      :style="{ width: '50rem' }"
-      :closable="true"
-  >
+  <Dialog v-model:visible="visibleProfile" modal :style="{ width: '50rem' }" :closable="true">
     <div class="flex justify-center items-center h-full">
       <div class="flex flex-col items-center border-r border-gray-700 pr-6">
         <Login />
       </div>
     </div>
   </Dialog>
-
 </template>
