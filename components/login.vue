@@ -417,7 +417,7 @@ async function saveChanges() {
     const response = await fetch(
         "https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user/update",
         {
-          method: "POST",
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(bodyToSend),
         }
