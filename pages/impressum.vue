@@ -1,23 +1,35 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+/**
+ * Initialisiert die Router-Instanz für die Navigation.
+ */
+const router = useRouter();
+
+/**
+ * Definiert die Menüelemente der Navigationsleiste.
+ * - "Home": Verlinkt auf die Startseite.
+ */
 const items = computed(() => [
   {
     label: 'Home',
     icon: 'pi pi-home',
     command: () => {
-      router.push('/')
-    }
-  }]);
+      router.push('/'); // Navigation zur Startseite
+    },
+  },
+]);
 </script>
 
 <template>
+  <!-- Navigationsleiste -->
   <MenuBar :model="items" class="text-gray-800" />
 
   <div class="p-6 shadow-md rounded-md">
-    <h1 class="text-2xl font-bold  mb-4">Impressum</h1>
+    <h1 class="text-2xl font-bold mb-4">Impressum</h1>
 
+    <!-- Accordion mit Impressumsangaben -->
     <Accordion>
       <!-- 1. Firmenangaben -->
       <AccordionTab header="nextChapter UG (haftungsbeschränkt)">
@@ -98,6 +110,7 @@ const items = computed(() => [
       </AccordionTab>
     </Accordion>
 
+    <!-- Zusätzliche Hinweise -->
     <div class="border-t pt-4 mt-6 text-sm text-gray-600">
       Wir sind weder bereit noch verpflichtet, an Streitbeilegungsverfahren vor einer
       Verbraucherschlichtungsstelle teilzunehmen.
@@ -106,5 +119,5 @@ const items = computed(() => [
 </template>
 
 <style scoped>
-
+/* Optional: CSS für die Darstellung */
 </style>

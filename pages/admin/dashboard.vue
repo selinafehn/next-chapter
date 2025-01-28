@@ -1,41 +1,54 @@
 <script setup lang="ts">
-
 import Header from "~/components/header.vue";
-import {computed, onMounted} from 'vue'
-import { useRouter } from 'vue-router'
-import {useStorage} from "@vueuse/core";
+import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStorage } from "@vueuse/core";
 
-const router = useRouter()
-
+/**
+ * Router für Navigation und gespeicherte Benutzerdaten.
+ */
+const router = useRouter();
 const userToken = useStorage("auth_token", "");
 const userNameStorage = useStorage('auth_username', '');
 
-const orderStat = ref('');
-const userStat = ref('');
-const bookStat = ref('');
-const allOrders = ref([])
+/**
+ * Reaktive Variablen für Statistiken und Bestellungen.
+ */
+const orderStat = ref(''); // Anzahl der Bestellungen
+const userStat = ref(''); // Anzahl der registrierten Nutzer
+const bookStat = ref(''); // Anzahl der verfügbaren Bücher
+const allOrders = ref([]); // Liste aller Bestellungen
 
+/**
+ * Menüelemente für die Navigationsleiste.
+ */
 const items = computed(() => [
   {
     label: 'Home',
     icon: 'pi pi-home',
     command: () => {
-      router.push('/')
-    }
-  },{
+      router.push('/');
+    },
+  },
+  {
     label: 'Dashboard',
     icon: 'pi pi-home',
     command: () => {
-      router.push('/admin/dashboard')
-    }
-  },{
+      router.push('/admin/dashboard');
+    },
+  },
+  {
     label: 'Bücher',
     icon: 'pi pi-book',
     command: () => {
-      router.push('/admin/books')
-    }
-  }]);
+      router.push('/admin/books');
+    },
+  },
+]);
 
+/**
+ * Lifecycle Hook: Lädt Statistiken und Bestellungen, wenn die Komponente gemountet wird.
+ */
 onMounted(() => {
   getAllOrders();
   getOrderStats();
@@ -43,22 +56,28 @@ onMounted(() => {
   getBookStats();
 });
 
-async function getOrderStats (){
-  try{
+/**
+ * Funktion zum Abrufen der Bestellstatistik.
+ */
+async function getOrderStats() {
+  try {
     const response = await fetch(
-    `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/count/orders`
+        `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/count/orders`
     );
-  if (!response.ok) {
-    throw new Error('Fehler beim Abrufen der Order Statistiken');
-  }
-  orderStat.value = await response.json();
+    if (!response.ok) {
+      throw new Error('Fehler beim Abrufen der Order Statistiken');
+    }
+    orderStat.value = await response.json();
   } catch (error) {
     console.error('Order Statistik laden fehlgeschlagen:', error);
   }
 }
 
-async function getUserStats (){
-  try{
+/**
+ * Funktion zum Abrufen der Nutzerstatistik.
+ */
+async function getUserStats() {
+  try {
     const response = await fetch(
         `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/count/users`
     );
@@ -71,8 +90,11 @@ async function getUserStats (){
   }
 }
 
-async function getBookStats (){
-  try{
+/**
+ * Funktion zum Abrufen der Buchstatistik.
+ */
+async function getBookStats() {
+  try {
     const response = await fetch(
         `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/count/books`
     );
@@ -85,23 +107,23 @@ async function getBookStats (){
   }
 }
 
-async function getAllOrders () {
-  try{
-    const response = await fetch (
-      `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/order/all?token=${userToken.value}`
+/**
+ * Funktion zum Abrufen aller Bestellungen.
+ */
+async function getAllOrders() {
+  try {
+    const response = await fetch(
+        `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/order/all?token=${userToken.value}`
     );
-    console.log(allOrders.value)
     if (!response.ok) {
       throw new Error('Fehler beim Abrufen der gesamten Orders');
     }
     const data = await response.json();
-    console.log('Response data:', data);
     allOrders.value = data;
   } catch (error) {
     console.error('Laden aller Orders fehlgeschlagen:', error);
   }
 }
-
 </script>
 
 <template>
@@ -109,27 +131,29 @@ async function getAllOrders () {
   <MenuBar :model="items" class="text-gray-800" />
 
   <div class="max-w-6xl mx-auto my-4 p-2">
-  <h1> Willkommen auf dem Dashboard {{userNameStorage}} </h1>
+    <!-- Begrüßung -->
+    <h1>Willkommen auf dem Dashboard, {{ userNameStorage }}</h1>
 
-  <p class="text-xl"> Hier sind die aktuellen Statistiken:</p>
-  <div class="mt-4 pb-4">
-    <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
-      So viele Bestellungen sind bisher eingegangen:
-      {{orderStat || 'Keine Bestellungen vorhanden' }}
-    </p>
-    <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
-      So viele User haben sich bisher registriert:
-      {{userStat || 'Noch kein User vorhanden' }}
-    </p>
-    <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
-      So viele Bücher sind im Shop verfügbar:
-      {{bookStat || 'Keine Bücher im Shop vorhanden' }}
-    </p>
-  </div>
+    <p class="text-xl">Hier sind die aktuellen Statistiken:</p>
 
+    <!-- Statistiken -->
+    <div class="mt-4 pb-4">
+      <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
+        So viele Bestellungen sind bisher eingegangen:
+        {{ orderStat || 'Keine Bestellungen vorhanden' }}
+      </p>
+      <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
+        So viele User haben sich bisher registriert:
+        {{ userStat || 'Noch kein User vorhanden' }}
+      </p>
+      <p class="text-gray-600 dark:text-gray-100 mt-2 leading-relaxed">
+        So viele Bücher sind im Shop verfügbar:
+        {{ bookStat || 'Keine Bücher im Shop vorhanden' }}
+      </p>
+    </div>
 
+    <!-- Tabelle: Alle Bestellungen -->
     <h2 class="text-xl font-bold mb-4 text-gray-600 dark:text-gray-100">Alle eingegangenen Bestellungen</h2>
-    <!-- PrimeVue-DataTable -->
     <DataTable
         :value="allOrders"
         responsiveLayout="scroll"
@@ -143,15 +167,9 @@ async function getAllOrders () {
       <Column field="totalAmount" header="Total Amount" sortable />
       <Column field="isbnList" header="Alle bestellten Bücher" />
     </DataTable>
-
   </div>
-
-
-
-
-
 </template>
 
 <style scoped>
-
+/* Optional: Eigene Styles */
 </style>
