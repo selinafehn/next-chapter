@@ -21,7 +21,7 @@ onMounted(async () => {
 
 async function fetchList () {
   try {
-    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlist?userEmail=${userEmail}`)
+    const response = await fetch(`https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/wishlist?userEmail=${userEmail}`)
     if (!response.ok) {
       throw new Error('Fehler beim Laden der Wunschliste')
     }
@@ -36,7 +36,7 @@ async function fetchList () {
 async function addToCart(isbn) {
   try {
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}&quantity=1`, {
+        `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}&quantity=1`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
         })
@@ -55,7 +55,7 @@ async function addToCart(isbn) {
 // Funktion zum Löschen eines Buches aus der Wishlist
 async function deleteOneBookFromWishlist(isbn) {
   try {
-    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmail}&isbn=${isbn}`, {
+    const response = await fetch(`https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/wishlistitem?userEmail=${userEmail}&isbn=${isbn}`, {
       method: 'DELETE'
     })
 

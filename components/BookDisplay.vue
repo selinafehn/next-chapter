@@ -9,7 +9,7 @@ const searchQuery = ref('');
 async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
   try {
     const pageNumber = currentPage + 1;
-    const url = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/all?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}&searchQuery=${searchQuery.value}`;
+    const url = `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/book/all?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}&searchQuery=${searchQuery.value}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error('API Fehler');

@@ -46,7 +46,7 @@ onMounted(() => {
 async function getOrderStats (){
   try{
     const response = await fetch(
-    `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/count/orders`
+    `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/count/orders`
     );
   if (!response.ok) {
     throw new Error('Fehler beim Abrufen der Order Statistiken');
@@ -60,7 +60,7 @@ async function getOrderStats (){
 async function getUserStats (){
   try{
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/count/users`
+        `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/count/users`
     );
     if (!response.ok) {
       throw new Error('Fehler beim Abrufen der User Statistiken');
@@ -74,7 +74,7 @@ async function getUserStats (){
 async function getBookStats (){
   try{
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/count/books`
+        `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/count/books`
     );
     if (!response.ok) {
       throw new Error('Fehler beim Abrufen der Book Statistiken');
@@ -88,7 +88,7 @@ async function getBookStats (){
 async function getAllOrders () {
   try{
     const response = await fetch (
-      `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/order/all?token=${userToken.value}`
+      `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/order/all?token=${userToken.value}`
     );
     console.log(allOrders.value)
     if (!response.ok) {

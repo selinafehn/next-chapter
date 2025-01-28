@@ -12,7 +12,7 @@ const isAdmin = ref();
 // Funktion, um die Adminrolle zu prüfen
 const checkAdminRole = async () => {
   try {
-    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/role/admin/get?email=${userEmail}`);
+    const response = await fetch(`https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user/role/admin/get?email=${userEmail}`);
     if (!response.ok) {
       throw new Error('Fehler beim Abrufen der Rolle');
     }

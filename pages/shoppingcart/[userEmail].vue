@@ -21,7 +21,7 @@ const cart = ref(null)
 
 async function fetchList () {
   try {
-    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/shoppingcart?userEmail=${userEmail}`)
+    const response = await fetch(`https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/shoppingcart?userEmail=${userEmail}`)
     if (!response.ok) {
       throw new Error('Fehler beim Laden der Wishlist')
     }
@@ -34,7 +34,7 @@ async function fetchList () {
 
 async function deleteOneBookFromCart(isbn) {
   try {
-    const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}`, {
+    const response = await fetch(`https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/cartitem?userEmail=${userEmail}&isbn=${isbn}`, {
       method: 'DELETE'
     })
     if (!response.ok) {
@@ -54,7 +54,7 @@ async function deleteOneBookFromCart(isbn) {
 
 async function checkoutBooks(){
   try {
-  const response = await fetch(`https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/order?userEmail=${userEmail}`, {
+  const response = await fetch(`https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/order?userEmail=${userEmail}`, {
     method: 'POST'
   })
     if (!response.ok) {

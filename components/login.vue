@@ -241,7 +241,7 @@ async function onLogin() {
 
   try {
     const response = await fetch(
-        "https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user",
+        "https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -295,7 +295,7 @@ async function onLogout() {
   errorMessage.value = "";
 
   try {
-    const logoutUrl = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user?token=${userToken.value}`;
+    const logoutUrl = `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user?token=${userToken.value}`;
     const response = await fetch(logoutUrl, { method: "DELETE" });
     if (!response.ok) throw new Error("Logout fehlgeschlagen");
 
@@ -336,7 +336,7 @@ async function onRegister() {
 
   try {
     const response = await fetch(
-        "https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/create",
+        "https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user/create",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -372,7 +372,7 @@ async function onRegister() {
 async function getUserbyEmail() {
   try {
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user?email=${userEmailStorage.value}`,
+        `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user?email=${userEmailStorage.value}`,
         { method: "GET" }
     );
     if (!response.ok) {
@@ -415,7 +415,7 @@ async function saveChanges() {
     };
 
     const response = await fetch(
-        "https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/update",
+        "https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user/update",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -482,7 +482,7 @@ async function confirmDeleteAccount() {
   try {
     // Dein Endpoint, z.B.:
     // DELETE /user/delete?email=test&password=test
-    const deleteUrl = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/user/delete?email=${userEmailStorage.value}&password=${deletePassword.value}`;
+    const deleteUrl = `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/user/delete?email=${userEmailStorage.value}&password=${deletePassword.value}`;
     const response = await fetch(deleteUrl, {
       method: 'DELETE',
     });

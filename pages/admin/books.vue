@@ -54,7 +54,7 @@ const items = computed(() => [
 async function addOneBook () {
   try {
     const response = await fetch(
-        `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book?token=${token.value}`,
+        `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/book?token=${token.value}`,
         {
           method: "POST",
           headers: {"Content-Type": "application/json"},
@@ -101,7 +101,7 @@ async function addOneBook () {
 // Buch löschen über ISBN (hier wird deleteIsbn.value genutzt)
 async function deleteBookByISBN () {
   try {
-    const deleteUrl = `https://b2c-backend-927d63ee0883.herokuapp.com/api/v1.0/book/delete?token=${token.value}&isbn=${deleteIsbn.value}`;
+    const deleteUrl = `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/book/delete?token=${token.value}&isbn=${deleteIsbn.value}`;
     const response = await fetch(deleteUrl, {
       method: 'DELETE',
     });
