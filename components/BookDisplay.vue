@@ -3,10 +3,10 @@ import { ref, onMounted, watch } from 'vue';
 const results = ref([]);
 const totalAmount = ref('');
 const page = ref(0);  // Achtung: PrimeVue verwendet 0-basierte Seiten, dein Backend vielleicht 1-basiert.
-const rows = ref(4);  // Anzahl Bücher pro Seite
+const rows = ref(8);  // Anzahl Bücher pro Seite
 const searchQuery = ref('');
 
-async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
+async function fetchBooks(currentPage = 0, pageSize = 8, genre = '') {
   try {
     const pageNumber = currentPage + 1;
     const url = `https://immense-bastion-48713-34053a42d791.herokuapp.com/search_books?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}&searchQuery=${searchQuery.value}`;
