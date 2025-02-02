@@ -1,7 +1,7 @@
 <script setup lang=ts>
 import { ref, onMounted, watch } from 'vue';
-const books = ref([]);
-const totalRecords = ref('');
+const results = ref([]);
+const totalAmount = ref('');
 const page = ref(0);  // Achtung: PrimeVue verwendet 0-basierte Seiten, dein Backend vielleicht 1-basiert.
 const rows = ref(4);  // Anzahl Bücher pro Seite
 const searchQuery = ref('');
@@ -9,14 +9,14 @@ const searchQuery = ref('');
 async function fetchBooks(currentPage = 0, pageSize = 4, genre = '') {
   try {
     const pageNumber = currentPage + 1;
-    const url = `https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/book/all?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}&searchQuery=${searchQuery.value}`;
+    const url = `https://immense-bastion-48713-34053a42d791.herokuapp.com/search_books?genre=${genre}&pageNumber=${pageNumber}&pageSize=${pageSize}&searchQuery=${searchQuery.value}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error('API Fehler');
     }
     const data = await response.json();
-    books.value = data.books || [];
-    totalRecords.value = data.totalAmount ?? 0;
+    results.value = data.search_results || [];
+    totalAmount.value = data.totalAmount ?? 0;
   } catch (error) {
     console.error('Fehler beim Abrufen der Bücher:', error);
   }
@@ -66,15 +66,15 @@ watch(selectedGenre, (newGenre) => {
       </div>
     </div>
 
-    <DataView :value="books" paginator :rows="rows" :totalRecords="totalRecords" @page="onPageChange" :layout="'grid'">
+    <DataView :value="results" paginator :rows="rows" :totalRecords="totalAmount" @page="onPageChange" :layout="'grid'">
       <!-- Grid-Layout: Items nebeneinander -->
       <template #grid>
         <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          <div v-for="book in books" :key="book.isbn" class="p-4">
+          <div v-for="book in results" :key="book.isbn" class="p-4">
             <NuxtLink :to="`/book-detail/${book.isbn}`" class="no-underline">
               <div
                   class="flex flex-col items-center border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-200 dark:bg-[#2E2D2D] shadow-md transition-shadow hover:shadow-lg h-full">
-                <img :src="book.imageUrlL || '/img.png'" :alt="book.title" class="h-60 w-auto object-cover rounded mb-4"/>
+                <img :src="book.imageurll || '/img.png'" :alt="book.title" class="h-60 w-auto object-cover rounded mb-4"/>
                 <div class="text-lg font-semibold text-gray-800 dark:text-gray-300 mt-1 text-center">{{ book.title }}</div>
                 <div class="text-sm text-gray-600 dark:text-gray-300 mt-1 text-center">Autor: {{ book.author }}</div>
                 <div class="text-sm text-gray-500 dark:text-gray-400 mt-1 text-center">Verlag: {{ book.publisher }}</div>
