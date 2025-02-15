@@ -211,7 +211,3 @@ async function deleteBookByISBN() {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Optional: Eigene Styles */
-</style>

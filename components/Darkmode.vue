@@ -34,6 +34,3 @@ watchEffect(() => mode.value = state.value)
     <i v-if="state === 'light'" class="pi pi-moon" />
   </Button>
 </template>
-
-<style scoped>
-</style>

@@ -169,7 +169,3 @@ async function getAllOrders() {
     </DataTable>
   </div>
 </template>
-
-<style scoped>
-/* Optional: Eigene Styles */
-</style>

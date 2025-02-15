@@ -39,7 +39,3 @@ const openChatbot = () => {
     />
   </div>
 </template>
-
-<style scoped>
-/* Platzhalter für benutzerdefiniertes CSS */
-</style>

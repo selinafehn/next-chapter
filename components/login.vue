@@ -213,12 +213,13 @@ const error = ref(false);
 const showDeleteDialog = ref(false);
 const deletePassword = ref('');
 
+/**
+ * Dialogsteuerung für den User Delete
+ */
 function onDeleteClick() {
-  // Dialog öffnen
   showDeleteDialog.value = true;
 }
 
-// Formular für das Bearbeiten nach Login
 const userForm = reactive({
   email: "",
   username: "",
@@ -227,13 +228,11 @@ const userForm = reactive({
   city: "",
   country: "",
 });
-
-// Computed: Eingeloggt?
 const isLoggedIn = computed(() => !!userToken.value);
 
-/* ------------------------------------
-   1) LOGIN-FUNKTION
------------------------------------- */
+/**
+ * user Login
+ */
 async function onLogin() {
   loading.value = true;
   errorMessage.value = "";
@@ -287,9 +286,9 @@ async function onLogin() {
   }
 }
 
-/* ------------------------------------
-   2) LOGOUT-FUNKTION
------------------------------------- */
+/**
+ * User logout
+ */
 async function onLogout() {
   loading.value = true;
   errorMessage.value = "";
@@ -326,9 +325,9 @@ async function onLogout() {
   }
 }
 
-/* ------------------------------------
-   3) REGISTRIEREN
------------------------------------- */
+/**
+ * User registrieren
+ */
 async function onRegister() {
   loading.value = true;
   success.value = false;
@@ -366,9 +365,9 @@ async function onRegister() {
   }
 }
 
-/* ------------------------------------
-   4) USERDATEN LADEN (nach Login)
------------------------------------- */
+/**
+ * Laden der Userdaten
+ */
 async function getUserbyEmail() {
   try {
     const response = await fetch(
@@ -396,9 +395,27 @@ async function getUserbyEmail() {
   }
 }
 
-/* ------------------------------------
-   5) SPEICHERN: USERDATEN AKTUALISIEREN
------------------------------------- */
+/**
+ * Mounted die Userdaten im Dialog aus dem user
+ */
+onMounted(async () => {
+  if (isLoggedIn.value) {
+    const user = await getUserbyEmail();
+    if (user) {
+      // Unser userForm mit den Daten befüllen
+      userForm.email = user.email;
+      userForm.username = user.username;
+      userForm.street = user.street;
+      userForm.postalCode = user.postalCode;
+      userForm.city = user.city;
+      userForm.country = user.country;
+    }
+  }
+});
+
+/**
+ * Aktualisiert die Userdaten
+ */
 async function saveChanges() {
   loading.value = true;
   error.value = false;
@@ -452,27 +469,11 @@ async function saveChanges() {
   }
 }
 
-/* ------------------------------------
-   Wenn eingeloggt => Daten laden
------------------------------------- */
-onMounted(async () => {
-  if (isLoggedIn.value) {
-    const user = await getUserbyEmail();
-    if (user) {
-      // Unser userForm mit den Daten befüllen
-      userForm.email = user.email;
-      userForm.username = user.username;
-      userForm.street = user.street;
-      userForm.postalCode = user.postalCode;
-      userForm.city = user.city;
-      userForm.country = user.country;
-    }
-  }
-});
 
-/* ----------------------------------------
-   Bestätigen: DELETE-Anfrage
----------------------------------------- */
+
+/**
+ * Dialog zum Bestätigen
+ */
 async function confirmDeleteAccount() {
   // Hier kannst du optional noch ein "Sicherheits-Confirm" machen,
   // aber wir haben ja schon den Dialog.
@@ -525,8 +526,3 @@ async function confirmDeleteAccount() {
   }
 }
 </script>
-
-
-<style scoped>
-/* Hier optional deine Styles einfügen */
-</style>

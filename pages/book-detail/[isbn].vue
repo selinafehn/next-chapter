@@ -143,6 +143,9 @@
 </template>
 
 <script setup>
+/**
+ * Imports
+ */
 import {onMounted, ref} from 'vue'
 import {useRoute} from 'vue-router'
 import Header from "~/components/header.vue";
@@ -150,8 +153,10 @@ import { useStorage } from '@vueuse/core';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 
+/**
+ * jegliche Konstanten (storages und refs)
+ */
 const toast = useToast();
-
 const userEmailStorage = useStorage('auth_email', '');
 const userTokenStorage = useStorage('auth_token', '');
 const userEmail = userEmailStorage.value;
@@ -161,14 +166,20 @@ const book = ref(null)
 const recommendations = ref ([])
 const list = ref(null)
 
+/**
+ * Lädt die Bücher sobald die Component gemounted wird, setzt die ISBN und lädt damit die Empfehlungen
+ */
 onMounted(async () => {
   await fetchBook();
-  const isbn = route.params.isbn // oder wie du an die ISBN kommst
+  const isbn = route.params.isbn
   if (isbn) {
     getRecommendations(String(isbn))
   }
 })
 
+/**
+ * Funktion zum Fetchen der Bücher.
+ */
 async function fetchBook() {
   try {
     const response = await fetch(`https://guarded-savannah-06972-2c2322fb41ef.herokuapp.com/api/v1.0/book?isbn=${isbn}`)
@@ -187,6 +198,9 @@ async function fetchBook() {
 
 }
 
+/**
+ * Funktion zum Hinzufügen zur Wishlist.
+ */
 async function addToWishlist(isbn) {
   const userEmail = userEmailStorage.value;
   const token = userTokenStorage.value;
@@ -237,6 +251,9 @@ async function addToWishlist(isbn) {
   }
 }
 
+/**
+ * Funktion um etwas dem Warenkorb hinzuzufügen.
+ */
 async function addToCart(isbn) {
   const userEmail = userEmailStorage.value;
   const token = userTokenStorage.value;
@@ -266,6 +283,9 @@ async function addToCart(isbn) {
   }
 }
 
+/**
+ * Funktion zum Abrufen aller Empfehlungen.
+ */
 async function getRecommendations(isbn) {
   try {
     const response = await fetch(
@@ -284,6 +304,4 @@ async function getRecommendations(isbn) {
     recommendations.value = [];
   }
 }
-
-
 </script>

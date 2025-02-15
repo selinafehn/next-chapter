@@ -120,7 +120,3 @@ const items = computed(() => [
     </Accordion>
   </div>
 </template>
-
-<style scoped>
-/* Optional: CSS für die Darstellung */
-</style>

@@ -180,7 +180,3 @@ async function confirmPayment() {
     </div>
   </Dialog>
 </template>
-
-<style scoped>
-/* Optionales Styling */
-</style>

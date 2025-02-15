@@ -117,7 +117,3 @@ const items = computed(() => [
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Optional: CSS für die Darstellung */
-</style>
